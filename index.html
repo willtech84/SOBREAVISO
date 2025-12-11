@@ -2,21 +2,28 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Sobreaviso RX - App</title>
     
-    <!-- CONFIGURAÇÕES PWA (CRÍTICAS!) -->
+    <!-- PWA CONFIG -->
     <meta name="theme-color" content="#0056b3">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Sobreaviso">
     <link rel="manifest" href="manifest.json">
     
-    <!-- Ícone -->
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📱</text></svg>">
-    
     <style>
+        /* ESTILOS GERAIS */
+        :root {
+            --primary: #0056b3;
+            --secondary: #6c757d;
+            --success: #28a745;
+            --danger: #dc3545;
+            --warning: #ffc107;
+            --light: #f8f9fa;
+            --dark: #343a40;
+        }
+        
         * {
             margin: 0;
             padding: 0;
@@ -25,351 +32,1353 @@
         
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #0056b3, #003d82);
-            color: white;
+            background-color: #f0f2f5;
+            color: #333;
+            padding: 10px;
             min-height: 100vh;
-            padding: 20px;
-            line-height: 1.6;
         }
         
         .container {
             max-width: 1000px;
             margin: 0 auto;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 15px;
         }
         
-        header {
-            text-align: center;
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+        /* CABEÇALHO */
+        .app-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--primary);
         }
         
-        h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
+        .app-header h1 {
+            color: var(--primary);
+            font-size: 1.5rem;
+        }
+        
+        /* MENU */
+        .main-menu {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 20px;
+            overflow-x: auto;
+            padding: 10px 0;
+        }
+        
+        .menu-btn {
+            padding: 12px 15px;
+            background: var(--light);
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--dark);
+            white-space: nowrap;
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 15px;
+            gap: 8px;
         }
         
-        .subtitle {
-            font-size: 1.2em;
-            opacity: 0.9;
+        .menu-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        /* ABAS */
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        /* FORMULÁRIOS */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 10px;
             margin-bottom: 20px;
+            background: var(--light);
+            padding: 15px;
+            border-radius: 8px;
         }
         
-        .install-btn {
-            background: white;
-            color: #0056b3;
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        label {
+            margin-bottom: 5px;
+            font-weight: 600;
+            font-size: 0.85em;
+            color: #555;
+        }
+        
+        input, select {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(0,86,179,0.2);
+        }
+        
+        /* BOTÕES */
+        .btn {
+            padding: 12px 20px;
             border: none;
-            padding: 15px 30px;
-            border-radius: 50px;
-            font-size: 18px;
+            border-radius: 6px;
             font-weight: bold;
             cursor: pointer;
-            display: flex;
+            display: inline-flex;
             align-items: center;
-            justify-content: center;
-            gap: 10px;
-            margin: 20px auto;
-            width: 80%;
-            max-width: 300px;
+            gap: 8px;
+            font-size: 14px;
             transition: all 0.3s;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
         
-        .install-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-        }
-        
-        .features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 20px;
-            margin: 30px 0;
-        }
-        
-        .feature-card {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 20px;
-            border-radius: 15px;
-            text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: transform 0.3s;
-        }
-        
-        .feature-card:hover {
-            transform: translateY(-5px);
-            background: rgba(255, 255, 255, 0.15);
-        }
-        
-        .feature-icon {
-            font-size: 2.5em;
-            margin-bottom: 15px;
-        }
-        
-        .instructions {
-            background: rgba(0, 0, 0, 0.2);
-            padding: 20px;
-            border-radius: 15px;
-            margin-top: 30px;
-            border-left: 4px solid #00ff88;
-        }
-        
-        .instructions h3 {
-            color: #00ff88;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .step {
-            display: flex;
-            align-items: flex-start;
-            gap: 15px;
-            margin-bottom: 15px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .step-number {
-            background: #0056b3;
+        .btn-primary {
+            background: var(--primary);
             color: white;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
+        }
+        
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+        
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+        
+        .btn-warning {
+            background: var(--warning);
+            color: #333;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .btn-group {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            flex-shrink: 0;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
         }
         
-        footer {
+        /* TABELAS */
+        .table-container {
+            overflow-x: auto;
+            margin-top: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85em;
+        }
+        
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        
+        th {
+            background: var(--primary);
+            color: white;
+            font-weight: 600;
+        }
+        
+        tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+        
+        /* ESTATÍSTICAS */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
             text-align: center;
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            font-size: 0.9em;
-            opacity: 0.8;
+            border: 1px solid #eee;
         }
         
+        .stat-card h3 {
+            color: var(--primary);
+            margin-bottom: 10px;
+            font-size: 0.9em;
+        }
+        
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        /* RESPONSIVO */
         @media (max-width: 768px) {
             .container {
-                padding: 20px;
+                padding: 10px;
             }
             
-            h1 {
-                font-size: 2em;
+            .app-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
             }
             
-            .features {
+            .form-grid {
                 grid-template-columns: 1fr;
             }
+            
+            .btn-group {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .main-menu {
+                flex-wrap: nowrap;
+                overflow-x: auto;
+            }
+        }
+        
+        /* MENSAGENS */
+        .message {
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            display: none;
+        }
+        
+        .message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <header>
+        <!-- CABEÇALHO -->
+        <div class="app-header">
             <h1>📱 Sobreaviso RX</h1>
-            <p class="subtitle">Aplicativo para gestão de plantões hospitalares</p>
-            <button class="install-btn" onclick="instalarApp()">
-                <span>📥</span> INSTALAR APP AGORA
+            <div style="font-size: 0.9em; color: #666;">
+                App instalado ✅
+            </div>
+        </div>
+        
+        <!-- MENU PRINCIPAL -->
+        <div class="main-menu">
+            <button class="menu-btn active" onclick="abrirAba('dashboard')">
+                📊 Dashboard
             </button>
-        </header>
+            <button class="menu-btn" onclick="abrirAba('exames')">
+                📋 Exames
+            </button>
+            <button class="menu-btn" onclick="abrirAba('corridas')">
+                🚗 Corridas
+            </button>
+            <button class="menu-btn" onclick="abrirAba('relatorios')">
+                📈 Relatórios
+            </button>
+            <button class="menu-btn" onclick="abrirAba('backup')">
+                💾 Backup
+            </button>
+        </div>
         
-        <div class="features">
-            <div class="feature-card">
-                <div class="feature-icon">📋</div>
-                <h3>Registro de Exames</h3>
-                <p>Cadastre todos os exames realizados durante o plantão</p>
+        <!-- MENSAGENS -->
+        <div id="message" class="message"></div>
+        
+        <!-- DASHBOARD -->
+        <div id="dashboard" class="tab-content active">
+            <h2 style="margin-bottom: 20px; color: var(--primary);">📊 Dashboard</h2>
+            
+            <!-- ESTATÍSTICAS -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>Total Exames</h3>
+                    <div class="stat-value" id="totalExames">0</div>
+                </div>
+                
+                <div class="stat-card">
+                    <h3>Total Corridas</h3>
+                    <div class="stat-value" id="totalCorridas">0</div>
+                </div>
+                
+                <div class="stat-card">
+                    <h3>Total Horas</h3>
+                    <div class="stat-value" id="totalHoras">00:00</div>
+                </div>
+                
+                <div class="stat-card">
+                    <h3>Total KM</h3>
+                    <div class="stat-value" id="totalKm">0.0</div>
+                </div>
             </div>
             
-            <div class="feature-card">
-                <div class="feature-icon">🚗</div>
-                <h3>Controle de Corridas</h3>
-                <p>Registre quilometragem e deslocamentos</p>
+            <!-- AÇÕES RÁPIDAS -->
+            <div style="margin-top: 30px;">
+                <h3 style="margin-bottom: 15px; color: #555;">⚡ Ações Rápidas</h3>
+                <div class="btn-group">
+                    <button class="btn btn-primary" onclick="abrirAba('exames')">
+                        ➕ Novo Exame
+                    </button>
+                    <button class="btn btn-success" onclick="abrirAba('corridas')">
+                        ➕ Nova Corrida
+                    </button>
+                    <button class="btn btn-warning" onclick="gerarRelatorio()">
+                        📄 Gerar Relatório
+                    </button>
+                    <button class="btn btn-danger" onclick="limparTudo()">
+                        🗑️ Limpar Tudo
+                    </button>
+                </div>
             </div>
             
-            <div class="feature-card">
-                <div class="feature-icon">📈</div>
-                <h3>Relatórios PDF</h3>
-                <p>Gere relatórios profissionais para impressão</p>
-            </div>
-            
-            <div class="feature-card">
-                <div class="feature-icon">💾</div>
-                <h3>Backup Local</h3>
-                <p>Seus dados salvos no seu dispositivo</p>
+            <!-- ÚLTIMOS REGISTROS -->
+            <div style="margin-top: 30px;">
+                <h3 style="margin-bottom: 15px; color: #555;">📋 Últimos Exames</h3>
+                <div class="table-container">
+                    <table id="ultimosExames">
+                        <thead>
+                            <tr>
+                                <th>Data</th>
+                                <th>Setor</th>
+                                <th>Exame</th>
+                                <th>Paciente</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
             </div>
         </div>
         
-        <div class="instructions">
-            <h3><span>ℹ️</span> Como Instalar no Celular</h3>
+        <!-- EXAMES -->
+        <div id="exames" class="tab-content">
+            <h2 style="margin-bottom: 20px; color: var(--primary);">📋 Gerenciar Exames</h2>
             
-            <div class="step">
-                <div class="step-number">1</div>
-                <div>
-                    <strong>Clique no botão "INSTALAR APP AGORA" acima</strong>
-                    <p>Ou toque nos 3 pontos (⋮) no Chrome e selecione "Adicionar à tela inicial"</p>
+            <!-- FORMULÁRIO -->
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="dataExame">Data *</label>
+                    <input type="date" id="dataExame" value="">
+                </div>
+                
+                <div class="form-group">
+                    <label for="horaEntrada">Hora Entrada</label>
+                    <input type="time" id="horaEntrada">
+                </div>
+                
+                <div class="form-group">
+                    <label for="horaSaida">Hora Saída</label>
+                    <input type="time" id="horaSaida">
+                </div>
+                
+                <div class="form-group">
+                    <label for="setorExame">Setor *</label>
+                    <select id="setorExame">
+                        <option value="">Selecione...</option>
+                        <option value="SUE">SUE</option>
+                        <option value="UTI 1">UTI 1</option>
+                        <option value="UTI 2">UTI 2</option>
+                        <option value="UTI 3">UTI 3</option>
+                        <option value="UTI 4">UTI 4</option>
+                        <option value="RIO NEGRO">RIO NEGRO</option>
+                        <option value="OUTRO">OUTRO</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="tipoExame">Exame *</label>
+                    <input type="text" id="tipoExame" placeholder="Ex: TC CRANIO">
+                </div>
+                
+                <div class="form-group">
+                    <label for="paciente">Paciente *</label>
+                    <input type="text" id="paciente" placeholder="Nome do paciente">
                 </div>
             </div>
             
-            <div class="step">
-                <div class="step-number">2</div>
-                <div>
-                    <strong>Confirme a instalação</strong>
-                    <p>Toque em "ADICIONAR" quando aparecer a confirmação</p>
-                </div>
+            <!-- BOTÕES -->
+            <div class="btn-group">
+                <button class="btn btn-success" onclick="salvarExame()">
+                    💾 Salvar Exame
+                </button>
+                <button class="btn btn-warning" onclick="limparFormExame()">
+                    🧹 Limpar
+                </button>
+                <button class="btn btn-danger" onclick="limparTodosExames()">
+                    🗑️ Limpar Todos
+                </button>
             </div>
             
-            <div class="step">
-                <div class="step-number">3</div>
-                <div>
-                    <strong>Pronto! App instalado</strong>
-                    <p>O ícone aparecerá na sua tela inicial como um app normal</p>
-                </div>
+            <!-- LISTA DE EXAMES -->
+            <div class="table-container">
+                <table id="tabelaExames">
+                    <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th>Entrada</th>
+                            <th>Saída</th>
+                            <th>Tempo</th>
+                            <th>Setor</th>
+                            <th>Exame</th>
+                            <th>Paciente</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
             </div>
         </div>
         
-        <footer>
-            <p>📱 App desenvolvido para técnicos de radiologia</p>
-            <p>Funciona offline • 100% gratuito • Sem anúncios</p>
-        </footer>
+        <!-- CORRIDAS -->
+        <div id="corridas" class="tab-content">
+            <h2 style="margin-bottom: 20px; color: var(--primary);">🚗 Gerenciar Corridas</h2>
+            
+            <!-- FORMULÁRIO -->
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="dataCorrida">Data *</label>
+                    <input type="date" id="dataCorrida" value="">
+                </div>
+                
+                <div class="form-group">
+                    <label for="kmCorrida">KM Rodados *</label>
+                    <input type="number" step="0.1" id="kmCorrida" placeholder="Ex: 2.5">
+                </div>
+                
+                <div class="form-group">
+                    <label for="obsCorrida">Observação</label>
+                    <input type="text" id="obsCorrida" placeholder="Ex: Para buscar material">
+                </div>
+            </div>
+            
+            <!-- BOTÕES -->
+            <div class="btn-group">
+                <button class="btn btn-success" onclick="salvarCorrida()">
+                    💾 Salvar Corrida
+                </button>
+                <button class="btn btn-warning" onclick="limparFormCorrida()">
+                    🧹 Limpar
+                </button>
+                <button class="btn btn-danger" onclick="limparTodasCorridas()">
+                    🗑️ Limpar Todas
+                </button>
+            </div>
+            
+            <!-- RESUMO -->
+            <div style="background: #e9ecef; padding: 15px; border-radius: 8px; margin: 20px 0;">
+                <h3 style="color: #333; margin-bottom: 10px;">📊 Resumo de Corridas</h3>
+                <div style="display: flex; gap: 20px;">
+                    <div>
+                        <strong>Total Registros:</strong>
+                        <span id="totalRegCorridas" style="font-size: 1.2em; margin-left: 10px;">0</span>
+                    </div>
+                    <div>
+                        <strong>Total KM:</strong>
+                        <span id="totalKmCorridas" style="font-size: 1.2em; margin-left: 10px;">0.0</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- LISTA DE CORRIDAS -->
+            <div class="table-container">
+                <table id="tabelaCorridas">
+                    <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th>KM</th>
+                            <th>Observação</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- RELATÓRIOS -->
+        <div id="relatorios" class="tab-content">
+            <h2 style="margin-bottom: 20px; color: var(--primary);">📈 Gerar Relatórios</h2>
+            
+            <!-- FILTROS -->
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="dataInicio">Data Início</label>
+                    <input type="date" id="dataInicio">
+                </div>
+                
+                <div class="form-group">
+                    <label for="dataFim">Data Fim</label>
+                    <input type="date" id="dataFim">
+                </div>
+                
+                <div class="form-group">
+                    <label for="periodoTexto">Período Texto</label>
+                    <input type="text" id="periodoTexto" placeholder="Ex: 22/11 a 23/11">
+                </div>
+            </div>
+            
+            <!-- BOTÕES -->
+            <div class="btn-group">
+                <button class="btn btn-primary" onclick="gerarRelatorio()">
+                    📊 Gerar Relatório
+                </button>
+                <button class="btn btn-success" onclick="gerarPDF()">
+                    📄 Exportar PDF
+                </button>
+                <button class="btn btn-warning" onclick="imprimirRelatorio()">
+                    🖨️ Imprimir
+                </button>
+            </div>
+            
+            <!-- VISUALIZAÇÃO DO RELATÓRIO -->
+            <div id="relatorioPreview" style="margin-top: 30px;">
+                <!-- O relatório será gerado aqui -->
+            </div>
+        </div>
+        
+        <!-- BACKUP -->
+        <div id="backup" class="tab-content">
+            <h2 style="margin-bottom: 20px; color: var(--primary);">💾 Backup & Restauração</h2>
+            
+            <!-- OPÇÕES -->
+            <div style="background: #f8f9fa; padding: 20px; border-radius: 8px;">
+                <h3 style="color: #333; margin-bottom: 15px;">📤 Exportar Dados</h3>
+                <div class="btn-group">
+                    <button class="btn btn-primary" onclick="exportarDados()">
+                        💾 Fazer Backup
+                    </button>
+                    <button class="btn btn-success" onclick="importarDados()">
+                        📂 Restaurar Backup
+                    </button>
+                </div>
+                
+                <h3 style="color: #333; margin-top: 30px; margin-bottom: 15px;">⚙️ Configurações</h3>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="autoBackup">Backup Automático</label>
+                        <select id="autoBackup">
+                            <option value="0">Desativado</option>
+                            <option value="300000">5 minutos</option>
+                            <option value="1800000">30 minutos</option>
+                            <option value="3600000">1 hora</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 20px; padding: 15px; background: white; border-radius: 6px;">
+                    <h4>📊 Estatísticas do Sistema</h4>
+                    <p><strong>Total de Dados Salvos:</strong> <span id="totalDados">0</span></p>
+                    <p><strong>Último Backup:</strong> <span id="ultimoBackup">Nunca</span></p>
+                    <p><strong>Espaço Usado:</strong> <span id="espacoUsado">0 KB</span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ÁREA DE IMPRESSÃO (OCULTA) -->
+    <div id="areaImpressao" style="display: none;">
+        <div style="text-align: center; margin-bottom: 30px; border-bottom: 2px solid #000; padding-bottom: 20px;">
+            <h2>RELATÓRIO SOBREAVISO RX</h2>
+            <h3 id="printPeriodo">PERÍODO: </h3>
+            <p id="printData">Gerado em: </p>
+        </div>
+        
+        <div id="printContent">
+            <!-- Conteúdo será inserido aqui -->
+        </div>
+        
+        <div style="margin-top: 50px; text-align: center; border-top: 1px solid #000; padding-top: 20px;">
+            <p>_________________________________________</p>
+            <p>Assinatura do Responsável</p>
+        </div>
     </div>
 
     <script>
-        // VARIÁVEIS
-        let deferredPrompt;
-        let isAppInstalled = false;
+        // ==================== VARIÁVEIS GLOBAIS ====================
+        let exames = [];
+        let corridas = [];
+        let exameEditando = null;
+        let corridaEditando = null;
 
-        // DETECTAR SE PODE INSTALAR
-        window.addEventListener('beforeinstallprompt', (e) => {
-            console.log('✅ PWA pronto para instalação!');
-            e.preventDefault();
-            deferredPrompt = e;
+        // ==================== INICIALIZAÇÃO ====================
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('App Sobreaviso RX iniciado!');
             
-            // Mostrar botão de instalação
-            mostrarBotaoInstalacao();
+            // Configurar data atual nos formulários
+            const hoje = new Date().toISOString().split('T')[0];
+            document.getElementById('dataExame').value = hoje;
+            document.getElementById('dataCorrida').value = hoje;
+            document.getElementById('dataInicio').value = hoje;
+            document.getElementById('dataFim').value = hoje;
+            
+            // Carregar dados salvos
+            carregarDados();
+            
+            // Atualizar dashboard
+            atualizarDashboard();
+            
+            // Configurar PWA
+            configurarPWA();
+            
+            // Mostrar mensagem de boas-vindas
+            mostrarMensagem('✅ App carregado com sucesso!', 'success');
         });
 
-        // DETECTAR SE JÁ ESTÁ INSTALADO
-        window.addEventListener('appinstalled', () => {
-            console.log('🎉 App instalado com sucesso!');
-            isAppInstalled = true;
+        // ==================== FUNÇÕES DO MENU ====================
+        function abrirAba(abaId) {
+            // Remover classe active de todos os botões
+            document.querySelectorAll('.menu-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
             
-            // Esconder botão de instalação
-            const btn = document.querySelector('.install-btn');
-            if (btn) {
-                btn.innerHTML = '<span>✅</span> APP INSTALADO!';
-                btn.style.background = '#00cc66';
-                btn.onclick = null;
-                btn.style.cursor = 'default';
+            // Adicionar classe active ao botão clicado
+            event.currentTarget.classList.add('active');
+            
+            // Esconder todas as abas
+            document.querySelectorAll('.tab-content').forEach(aba => {
+                aba.classList.remove('active');
+            });
+            
+            // Mostrar aba selecionada
+            document.getElementById(abaId).classList.add('active');
+            
+            // Se for dashboard, atualizar
+            if (abaId === 'dashboard') {
+                atualizarDashboard();
             }
-            
-            // Mostrar mensagem
-            setTimeout(() => {
-                alert('🎉 App instalado com sucesso!\n\nO ícone já está na sua tela inicial.\nAbra como um aplicativo normal!');
-            }, 500);
-        });
-
-        // VERIFICAR SE JÁ ESTÁ RODANDO COMO APP INSTALADO
-        if (window.matchMedia('(display-mode: standalone)').matches) {
-            console.log('📱 App rodando como PWA instalado');
-            isAppInstalled = true;
-            document.querySelector('.install-btn').innerHTML = '<span>✅</span> APP ABERTO';
         }
 
-        // FUNÇÃO PARA INSTALAR
-        function instalarApp() {
-            if (isAppInstalled) {
-                alert('✅ App já está instalado!\nProcure o ícone "Sobreaviso RX" na sua tela inicial.');
+        // ==================== EXAMES ====================
+        function salvarExame() {
+            // Obter valores do formulário
+            const data = document.getElementById('dataExame').value;
+            const horaEntrada = document.getElementById('horaEntrada').value;
+            const horaSaida = document.getElementById('horaSaida').value;
+            const setor = document.getElementById('setorExame').value;
+            const exame = document.getElementById('tipoExame').value.toUpperCase();
+            const paciente = document.getElementById('paciente').value.toUpperCase();
+            
+            // Validar campos obrigatórios
+            if (!data || !setor || !exame || !paciente) {
+                mostrarMensagem('❌ Preencha todos os campos obrigatórios!', 'error');
                 return;
             }
             
-            if (deferredPrompt) {
-                // Mostrar prompt de instalação nativo
-                deferredPrompt.prompt();
-                
-                deferredPrompt.userChoice.then((choiceResult) => {
-                    if (choiceResult.outcome === 'accepted') {
-                        console.log('👤 Usuário aceitou instalar');
-                    } else {
-                        console.log('👤 Usuário recusou instalar');
-                        mostrarInstrucoesManuais();
-                    }
-                    deferredPrompt = null;
-                });
-            } else {
-                // Se não tem prompt, mostrar instruções manuais
-                mostrarInstrucoesManuais();
+            // Calcular tempo
+            let tempo = '';
+            if (horaEntrada && horaSaida) {
+                tempo = calcularTempo(horaEntrada, horaSaida);
             }
-        }
-
-        // MOSTRAR BOTÃO DE INSTALAÇÃO
-        function mostrarBotaoInstalacao() {
-            const btn = document.querySelector('.install-btn');
-            if (btn && !isAppInstalled) {
-                btn.style.display = 'flex';
-                btn.innerHTML = '<span>📥</span> INSTALAR APP AGORA';
-                btn.style.background = 'white';
-                btn.style.color = '#0056b3';
-                btn.onclick = instalarApp;
-            }
-        }
-
-        // INSTRUÇÕES MANUAIS
-        function mostrarInstrucoesManuais() {
-            const mensagem = `
-📱 COMO INSTALAR MANUALMENTE:
-
-1. Toque nos TRÊS PONTOS (⋮) no canto superior direito do Chrome
-
-2. Role para baixo e selecione:
-   📌 "Adicionar à tela inicial"
-
-3. Toque em "ADICIONAR"
-
-4. Pronto! O app aparecerá na sua tela inicial como um aplicativo normal.
-
-💡 Dica: Feche todas as abas do Chrome e abra o app pela tela inicial!
-            `;
             
-            alert(mensagem);
+            // Criar objeto do exame
+            const novoExame = {
+                id: exameEditando ? exameEditando.id : Date.now(),
+                data: data,
+                horaEntrada: horaEntrada,
+                horaSaida: horaSaida,
+                tempo: tempo,
+                setor: setor,
+                exame: exame,
+                paciente: paciente,
+                dataCriacao: new Date().toISOString()
+            };
+            
+            // Adicionar ou atualizar
+            if (exameEditando) {
+                // Atualizar exame existente
+                const index = exames.findIndex(e => e.id === exameEditando.id);
+                if (index !== -1) {
+                    exames[index] = novoExame;
+                }
+                mostrarMensagem('✅ Exame atualizado com sucesso!', 'success');
+                exameEditando = null;
+            } else {
+                // Adicionar novo exame
+                exames.push(novoExame);
+                mostrarMensagem('✅ Exame salvo com sucesso!', 'success');
+            }
+            
+            // Salvar no localStorage
+            salvarDados();
+            
+            // Limpar formulário
+            limparFormExame();
+            
+            // Atualizar lista e dashboard
+            atualizarListaExames();
+            atualizarDashboard();
         }
 
-        // SERVICE WORKER - PARA FUNCIONAR OFFLINE
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('sw.js')
-                    .then(registration => {
-                        console.log('✅ Service Worker registrado:', registration.scope);
-                    })
-                    .catch(error => {
-                        console.log('❌ Erro Service Worker:', error);
-                    });
+        function calcularTempo(inicio, fim) {
+            const [h1, m1] = inicio.split(':').map(Number);
+            const [h2, m2] = fim.split(':').map(Number);
+            
+            let minutos1 = h1 * 60 + m1;
+            let minutos2 = h2 * 60 + m2;
+            
+            // Se passou da meia-noite
+            if (minutos2 < minutos1) {
+                minutos2 += 24 * 60;
+            }
+            
+            const diferenca = minutos2 - minutos1;
+            const horas = Math.floor(diferenca / 60);
+            const minutos = diferenca % 60;
+            
+            return `${horas.toString().padStart(2, '0')}:${minutos.toString().padStart(2, '0')}`;
+        }
+
+        function editarExame(id) {
+            const exame = exames.find(e => e.id === id);
+            if (!exame) return;
+            
+            // Preencher formulário
+            document.getElementById('dataExame').value = exame.data;
+            document.getElementById('horaEntrada').value = exame.horaEntrada;
+            document.getElementById('horaSaida').value = exame.horaSaida;
+            document.getElementById('setorExame').value = exame.setor;
+            document.getElementById('tipoExame').value = exame.exame;
+            document.getElementById('paciente').value = exame.paciente;
+            
+            // Configurar modo edição
+            exameEditando = exame;
+            
+            // Ir para aba de exames
+            abrirAba('exames');
+            
+            // Mostrar mensagem
+            mostrarMensagem('✏️ Editando exame...', 'success');
+            
+            // Scroll para o topo
+            window.scrollTo(0, 0);
+        }
+
+        function excluirExame(id) {
+            if (!confirm('Tem certeza que deseja excluir este exame?')) {
+                return;
+            }
+            
+            exames = exames.filter(e => e.id !== id);
+            salvarDados();
+            atualizarListaExames();
+            atualizarDashboard();
+            mostrarMensagem('🗑️ Exame excluído!', 'success');
+        }
+
+        function limparFormExame() {
+            const hoje = new Date().toISOString().split('T')[0];
+            document.getElementById('dataExame').value = hoje;
+            document.getElementById('horaEntrada').value = '';
+            document.getElementById('horaSaida').value = '';
+            document.getElementById('setorExame').value = '';
+            document.getElementById('tipoExame').value = '';
+            document.getElementById('paciente').value = '';
+            exameEditando = null;
+        }
+
+        function limparTodosExames() {
+            if (!confirm('⚠️ ATENÇÃO!\n\nIsso irá excluir TODOS os exames.\nTem certeza?')) {
+                return;
+            }
+            
+            exames = [];
+            salvarDados();
+            atualizarListaExames();
+            atualizarDashboard();
+            mostrarMensagem('🧹 Todos os exames foram excluídos!', 'success');
+        }
+
+        function atualizarListaExames() {
+            const tbody = document.querySelector('#tabelaExames tbody');
+            tbody.innerHTML = '';
+            
+            // Ordenar por data (mais recente primeiro)
+            exames.sort((a, b) => new Date(b.data) - new Date(a.data));
+            
+            exames.forEach(exame => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${formatarData(exame.data)}</td>
+                    <td>${exame.horaEntrada || '-'}</td>
+                    <td>${exame.horaSaida || '-'}</td>
+                    <td><strong>${exame.tempo || '-'}</strong></td>
+                    <td>${exame.setor}</td>
+                    <td>${exame.exame}</td>
+                    <td>${exame.paciente}</td>
+                    <td style="white-space: nowrap;">
+                        <button onclick="editarExame(${exame.id})" style="
+                            background: #ffc107;
+                            color: #333;
+                            border: none;
+                            padding: 5px 10px;
+                            border-radius: 4px;
+                            margin-right: 5px;
+                            cursor: pointer;
+                        ">✏️</button>
+                        <button onclick="excluirExame(${exame.id})" style="
+                            background: #dc3545;
+                            color: white;
+                            border: none;
+                            padding: 5px 10px;
+                            border-radius: 4px;
+                            cursor: pointer;
+                        ">🗑️</button>
+                    </td>
+                `;
+                tbody.appendChild(row);
             });
         }
 
-        // MOSTRAR AVISO SE NÃO FOR HTTPS
-        if (location.protocol !== 'https:' && !location.hostname.includes('localhost')) {
-            console.warn('⚠️ Para instalação PWA, recomenda-se HTTPS');
+        // ==================== CORRIDAS ====================
+        function salvarCorrida() {
+            const data = document.getElementById('dataCorrida').value;
+            const km = parseFloat(document.getElementById('kmCorrida').value);
+            const obs = document.getElementById('obsCorrida').value.toUpperCase();
+            
+            // Validar
+            if (!data || isNaN(km) || km <= 0) {
+                mostrarMensagem('❌ Preencha data e KM corretamente!', 'error');
+                return;
+            }
+            
+            const novaCorrida = {
+                id: corridaEditando ? corridaEditando.id : Date.now(),
+                data: data,
+                km: km,
+                observacao: obs || '',
+                dataCriacao: new Date().toISOString()
+            };
+            
+            if (corridaEditando) {
+                const index = corridas.findIndex(c => c.id === corridaEditando.id);
+                if (index !== -1) {
+                    corridas[index] = novaCorrida;
+                }
+                mostrarMensagem('✅ Corrida atualizada!', 'success');
+                corridaEditando = null;
+            } else {
+                corridas.push(novaCorrida);
+                mostrarMensagem('✅ Corrida salva!', 'success');
+            }
+            
+            salvarDados();
+            limparFormCorrida();
+            atualizarListaCorridas();
+            atualizarDashboard();
         }
 
-        // INICIALIZAR
-        console.log('🚀 Sobreaviso RX inicializado!');
-        console.log('🌐 URL:', window.location.href);
-        console.log('📱 User Agent:', navigator.userAgent);
+        function editarCorrida(id) {
+            const corrida = corridas.find(c => c.id === id);
+            if (!corrida) return;
+            
+            document.getElementById('dataCorrida').value = corrida.data;
+            document.getElementById('kmCorrida').value = corrida.km;
+            document.getElementById('obsCorrida').value = corrida.observacao;
+            
+            corridaEditando = corrida;
+            abrirAba('corridas');
+            mostrarMensagem('✏️ Editando corrida...', 'success');
+            window.scrollTo(0, 0);
+        }
+
+        function excluirCorrida(id) {
+            if (!confirm('Excluir esta corrida?')) return;
+            
+            corridas = corridas.filter(c => c.id !== id);
+            salvarDados();
+            atualizarListaCorridas();
+            atualizarDashboard();
+            mostrarMensagem('🗑️ Corrida excluída!', 'success');
+        }
+
+        function limparFormCorrida() {
+            const hoje = new Date().toISOString().split('T')[0];
+            document.getElementById('dataCorrida').value = hoje;
+            document.getElementById('kmCorrida').value = '';
+            document.getElementById('obsCorrida').value = '';
+            corridaEditando = null;
+        }
+
+        function limparTodasCorridas() {
+            if (!confirm('⚠️ Excluir TODAS as corridas?')) return;
+            
+            corridas = [];
+            salvarDados();
+            atualizarListaCorridas();
+            atualizarDashboard();
+            mostrarMensagem('🧹 Todas as corridas excluídas!', 'success');
+        }
+
+        function atualizarListaCorridas() {
+            const tbody = document.querySelector('#tabelaCorridas tbody');
+            tbody.innerHTML = '';
+            
+            corridas.sort((a, b) => new Date(b.data) - new Date(a.data));
+            
+            let totalKm = 0;
+            
+            corridas.forEach(corrida => {
+                totalKm += corrida.km;
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${formatarData(corrida.data)}</td>
+                    <td><strong>${corrida.km.toFixed(1)} km</strong></td>
+                    <td>${corrida.observacao || '-'}</td>
+                    <td style="white-space: nowrap;">
+                        <button onclick="editarCorrida(${corrida.id})" style="
+                            background: #ffc107;
+                            color: #333;
+                            border: none;
+                            padding: 5px 10px;
+                            border-radius: 4px;
+                            margin-right: 5px;
+                            cursor: pointer;
+                        ">✏️</button>
+                        <button onclick="excluirCorrida(${corrida.id})" style="
+                            background: #dc3545;
+                            color: white;
+                            border: none;
+                            padding: 5px 10px;
+                            border-radius: 4px;
+                            cursor: pointer;
+                        ">🗑️</button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+            
+            // Atualizar resumo
+            document.getElementById('totalRegCorridas').textContent = corridas.length;
+            document.getElementById('totalKmCorridas').textContent = totalKm.toFixed(1);
+        }
+
+        // ==================== DASHBOARD ====================
+        function atualizarDashboard() {
+            // Total exames
+            document.getElementById('totalExames').textContent = exames.length;
+            
+            // Total corridas
+            document.getElementById('totalCorridas').textContent = corridas.length;
+            
+            // Total horas
+            let totalMinutos = 0;
+            exames.forEach(exame => {
+                if (exame.tempo) {
+                    const [h, m] = exame.tempo.split(':').map(Number);
+                    totalMinutos += h * 60 + m;
+                }
+            });
+            const horas = Math.floor(totalMinutos / 60);
+            const minutos = totalMinutos % 60;
+            document.getElementById('totalHoras').textContent = 
+                `${horas.toString().padStart(2, '0')}:${minutos.toString().padStart(2, '0')}`;
+            
+            // Total KM
+            const totalKm = corridas.reduce((acc, c) => acc + c.km, 0);
+            document.getElementById('totalKm').textContent = totalKm.toFixed(1);
+            
+            // Últimos exames
+            atualizarUltimosExames();
+            
+            // Estatísticas do sistema
+            atualizarEstatisticasSistema();
+        }
+
+        function atualizarUltimosExames() {
+            const tbody = document.querySelector('#ultimosExames tbody');
+            tbody.innerHTML = '';
+            
+            const ultimos = exames.slice(0, 5); // Últimos 5 exames
+            
+            ultimos.forEach(exame => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${formatarData(exame.data)}</td>
+                    <td>${exame.setor}</td>
+                    <td>${exame.exame}</td>
+                    <td>${exame.paciente}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // ==================== RELATÓRIOS ====================
+        function gerarRelatorio() {
+            const dataInicio = document.getElementById('dataInicio').value;
+            const dataFim = document.getElementById('dataFim').value;
+            const periodoTexto = document.getElementById('periodoTexto').value;
+            
+            if (!dataInicio || !dataFim) {
+                mostrarMensagem('❌ Selecione datas de início e fim!', 'error');
+                return;
+            }
+            
+            // Filtrar exames por período
+            const examesFiltrados = exames.filter(exame => {
+                return exame.data >= dataInicio && exame.data <= dataFim;
+            });
+            
+            // Filtrar corridas por período
+            const corridasFiltradas = corridas.filter(corrida => {
+                return corrida.data >= dataInicio && corrida.data <= dataFim;
+            });
+            
+            // Calcular estatísticas
+            let totalHoras = 0;
+            examesFiltrados.forEach(exame => {
+                if (exame.tempo) {
+                    const [h, m] = exame.tempo.split(':').map(Number);
+                    totalHoras += h + (m / 60);
+                }
+            });
+            
+            const totalKm = corridasFiltradas.reduce((acc, c) => acc + c.km, 0);
+            
+            // Gerar HTML do relatório
+            const relatorioHTML = `
+                <div style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+                    <h3 style="color: var(--primary); margin-bottom: 20px;">
+                        📊 Relatório ${periodoTexto ? `- ${periodoTexto}` : ''}
+                    </h3>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 30px;">
+                        <div style="background: #e3f2fd; padding: 15px; border-radius: 8px; text-align: center;">
+                            <h4 style="color: #1976d2;">📋 Exames</h4>
+                            <p style="font-size: 32px; font-weight: bold; margin: 10px 0;">${examesFiltrados.length}</p>
+                            <p style="color: #666;">registros no período</p>
+                        </div>
+                        
+                        <div style="background: #e8f5e9; padding: 15px; border-radius: 8px; text-align: center;">
+                            <h4 style="color: #388e3c;">🚗 Corridas</h4>
+                            <p style="font-size: 32px; font-weight: bold; margin: 10px 0;">${corridasFiltradas.length}</p>
+                            <p style="color: #666;">registros no período</p>
+                        </div>
+                        
+                        <div style="background: #fff3e0; padding: 15px; border-radius: 8px; text-align: center;">
+                            <h4 style="color: #f57c00;">⏱️ Total Horas</h4>
+                            <p style="font-size: 32px; font-weight: bold; margin: 10px 0;">${totalHoras.toFixed(2)}h</p>
+                            <p style="color: #666;">horas trabalhadas</p>
+                        </div>
+                        
+                        <div style="background: #f3e5f5; padding: 15px; border-radius: 8px; text-align: center;">
+                            <h4 style="color: #7b1fa2;">📏 Total KM</h4>
+                            <p style="font-size: 32px; font-weight: bold; margin: 10px 0;">${totalKm.toFixed(1)}</p>
+                            <p style="color: #666;">quilômetros</p>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 20px;">
+                        <h4 style="color: #555; margin-bottom: 15px;">📋 Detalhamento de Exames</h4>
+                        <div style="overflow-x: auto;">
+                            <table style="width: 100%; border-collapse: collapse;">
+                                <thead>
+                                    <tr style="background: #0056b3; color: white;">
+                                        <th style="padding: 10px; border: 1px solid #ddd;">Data</th>
+                                        <th style="padding: 10px; border: 1px solid #ddd;">Setor</th>
+                                        <th style="padding: 10px; border: 1px solid #ddd;">Exame</th>
+                                        <th style="padding: 10px; border: 1px solid #ddd;">Paciente</th>
+                                        <th style="padding: 10px; border: 1px solid #ddd;">Tempo</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${examesFiltrados.map(exame => `
+                                        <tr>
+                                            <td style="padding: 8px; border: 1px solid #ddd;">${formatarData(exame.data)}</td>
+                                            <td style="padding: 8px; border: 1px solid #ddd;">${exame.setor}</td>
+                                            <td style="padding: 8px; border: 1px solid #ddd;">${exame.exame}</td>
+                                            <td style="padding: 8px; border: 1px solid #ddd;">${exame.paciente}</td>
+                                            <td style="padding: 8px; border: 1px solid #ddd;">${exame.tempo || '-'}</td>
+                                        </tr>
+                                    `).join('')}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 30px;">
+                        <h4 style="color: #555; margin-bottom: 15px;">🚗 Detalhamento de Corridas</h4>
+                        <div style="overflow-x: auto;">
+                            <table style="width: 100%; border-collapse: collapse;">
+                                <thead>
+                                    <tr style="background: #28a745; color: white;">
+                                        <th style="padding: 10px; border: 1px solid #ddd;">Data</th>
+                                        <th style="padding: 10px; border: 1px solid #ddd;">KM</th>
+                                        <th style="padding: 10px; border: 1px solid #ddd;">Observação</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${corridasFiltradas.map(corrida => `
+                                        <tr>
+                                            <td style="padding: 8px; border: 1px solid #ddd;">${formatarData(corrida.data)}</td>
+                                            <td style="padding: 8px; border: 1px solid #ddd;">${corrida.km.toFixed(1)} km</td>
+                                            <td style="padding: 8px; border: 1px solid #ddd;">${corrida.observacao || '-'}</td>
+                                        </tr>
+                                    `).join('')}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // Mostrar relatório
+            document.getElementById('relatorioPreview').innerHTML = relatorioHTML;
+            mostrarMensagem('✅ Relatório gerado com sucesso!', 'success');
+            
+            // Ir para aba de relatórios
+            abrirAba('relatorios');
+        }
+
+        function gerarPDF() {
+            // Implementação simplificada - na prática use uma biblioteca
+            alert('📄 Para exportar PDF, use a função de impressão do navegador.');
+            imprimirRelatorio();
+        }
+
+        function imprimirRelatorio() {
+            // Preparar conteúdo para impressão
+            const periodoTexto = document.getElementById('periodoTexto').value;
+            const hoje = new Date().toLocaleDateString('pt-BR');
+            
+            // Configurar área de impressão
+            document.getElementById('printPeriodo').textContent = 
+                `PERÍODO: ${periodoTexto || 'Período não especificado'}`;
+            document.getElementById('printData').textContent = 
+                `Gerado em: ${hoje}`;
+            
+            // Copiar conteúdo do relatório
+            const relatorioContent = document.getElementById('relatorioPreview').innerHTML;
+            document.getElementById('printContent').innerHTML = relatorioContent;
+            
+            // Imprimir
+            const printArea = document.getElementById('areaImpressao');
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(`
+                <html>
+                    <head>
+                        <title>Relatório Sobreaviso RX</title>
+                        <style>
+                            body { font-family: Arial, sans-serif; padding: 20px; }
+                            h2, h3 { text-align: center; }
+                            table { width: 100%; border-collapse: collapse; margin: 10px 0; }
+                            th, td { border: 1px solid #000; padding: 8px; text-align: left; }
+                            th { background-color: #f0f0f0; }
+                            .stat { margin: 15px 0; text-align: center; }
+                        </style>
+                    </head>
+                    <body>
+                        ${printArea.innerHTML}
+                    </body>
+                </html>
+            `);
+            printWindow.document.close();
+            printWindow.focus();
+            printWindow.print();
+        }
+
+        // ==================== BACKUP ====================
+        function exportarDados() {
+            const dados = {
+                exames: exames,
+                corridas: corridas,
+                exportadoEm: new Date().toISOString(),
+                versao: '1.0'
+            };
+            
+            const blob = new Blob([JSON.stringify(dados, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `sobreaviso-backup-${new Date().toISOString().slice(0,10)}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            mostrarMensagem('✅ Backup exportado com sucesso!', 'success');
+            
+            // Atualizar último backup
+            localStorage.setItem('ultimoBackup', new Date().toISOString());
+            atualizarEstatisticasSistema();
+        }
+
+        function importarDados() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.json';
+            
+            input.onchange = function(e) {
+                const file = e.target.files[0];
+                if (!file) return;
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    try {
+                        const dados = JSON.parse(e.target.result);
+                        
+                        if (!confirm(`⚠️ Importar ${dados.exames?.length || 0} exames e ${dados.corridas?.length || 0} corridas?\nIsso substituirá os dados atuais.`)) {
+                            return;
+                        }
+                        
+                        if (dados.exames) exames = dados.exames;
+                        if (dados.corridas) corridas = dados.corridas;
+                        
+                        salvarDados();
+                        atualizarListaExames();
+                        atualizarListaCorridas();
+                        atualizarDashboard();
+                        
+                        mostrarMensagem('✅ Dados importados com sucesso!', 'success');
+                    } catch (error) {
+                        mostrarMensagem('❌ Erro ao importar arquivo!', 'error');
+                        console.error(error);
+                    }
+                };
+                reader.readAsText(file);
+            };
+            
+            input.click();
+        }
+
+        // ==================== UTILITÁRIOS ====================
+        function formatarData(dataISO) {
+            if (!dataISO) return '';
+            const [ano, mes, dia] = dataISO.split('-');
+            return `${dia}/${mes}/${ano}`;
+        }
+
+        function mostrarMensagem(texto, tipo) {
+            const mensagemDiv = document.getElementById('message');
+            mensagemDiv.textContent = texto;
+            mensagemDiv.className = `message ${tipo}`;
+            mensagemDiv.style.display = 'block';
+            
+            setTimeout(() => {
+                mensagemDiv.style.display = 'none';
+            }, 3000);
+        }
+
+        function salvarDados() {
+            localStorage.setItem('sobreavisoExames', JSON.stringify(exames));
+            localStorage.setItem('sobreavisoCorridas', JSON.stringify(corridas));
+        }
+
+        function carregarDados() {
+            const examesSalvos = localStorage.getItem('sobreavisoExames');
+            const corridasSalvas = localStorage.getItem('sobreavisoCorridas');
+            
+            if (examesSalvos) {
+                exames = JSON.parse(examesSalvos);
+                atualizarListaExames();
+            }
+            
+            if (corridasSalvas) {
+                corridas = JSON.parse(corridasSalvas);
+                atualizarListaCorridas();
+            }
+        }
+
+        function limparTudo() {
+            if (!confirm('⚠️ ATENÇÃO CRÍTICA!\n\nIsso irá limpar TODOS os dados do app:\n- Todos os exames\n- Todas as corridas\n\nTem certeza absoluta?')) {
+                return;
+            }
+            
+            exames = [];
+            corridas = [];
+            salvarDados();
+            atualizarListaExames();
+            atualizarListaCorridas();
+            atualizarDashboard();
+            mostrarMensagem('🧹 Todos os dados foram limpos!', 'success');
+        }
+
+        function atualizarEstatisticasSistema() {
+            // Total de dados
+            const totalDados = exames.length + corridas.length;
+            document.getElementById('totalDados').textContent = totalDados;
+            
+            // Último backup
+            const ultimoBackup = localStorage.getItem('ultimoBackup');
+            if (ultimoBackup) {
+                const data = new Date(ultimoBackup);
+                document.getElementById('ultimoBackup').textContent = 
+                    data.toLocaleDateString('pt-BR') + ' ' + data.toLocaleTimeString('pt-BR').slice(0,5);
+            }
+            
+            // Espaço usado
+            const espaco = JSON.stringify(localStorage).length;
+            document.getElementById('espacoUsado').textContent = 
+                Math.round(espaco / 1024) + ' KB';
+        }
+
+        // ==================== PWA ====================
+        function configurarPWA() {
+            // Verificar se está instalado
+            if (window.matchMedia('(display-mode: standalone)').matches) {
+                console.log('📱 App rodando como PWA instalado');
+            }
+            
+            // Registrar Service Worker
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('sw.js')
+                    .then(reg => console.log('✅ Service Worker registrado:', reg.scope))
+                    .catch(err => console.log('❌ Erro Service Worker:', err));
+            }
+        }
+
+        // Inicializar automaticamente após carregar
+        window.onload = function() {
+            setTimeout(() => {
+                atualizarListaExames();
+                atualizarListaCorridas();
+            }, 500);
+        };
     </script>
 </body>
 </html>
