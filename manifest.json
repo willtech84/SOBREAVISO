@@ -1,0 +1,50 @@
+{
+  "name": "Sobreaviso RX",
+  "short_name": "Sobreaviso",
+  "description": "App para gestão de plantões hospitalares",
+  "start_url": "/SOBREAVISO/",
+  "display": "standalone",
+  "background_color": "#0056b3",
+  "theme_color": "#0056b3",
+  "orientation": "portrait",
+  "scope": "/SOBREAVISO/",
+  "icons": [
+    {
+      "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iIzAwNTZiMyIvPjx0ZXh0IHg9IjUwIiB5PSI1MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjQwIiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPlI8L3RleHQ+PC9zdmc+",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48cmVjdCB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgZmlsbD0iIzAwNTZiMyIvPjx0ZXh0IHg9IjI1NiIgeT0iMjU2IiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMjAwIiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPlI8L3RleHQ+PC9zdmc+",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "https://via.placeholder.com/540x720/0056b3/ffffff?text=Sobreaviso+RX",
+      "sizes": "540x720",
+      "type": "image/png",
+      "form_factor": "narrow"
+    }
+  ],
+  "categories": ["medical", "productivity", "utilities"],
+  "shortcuts": [
+    {
+      "name": "Novo Exame",
+      "short_name": "Exame",
+      "description": "Registrar novo exame",
+      "url": "/SOBREAVISO/?novo-exame",
+      "icons": [{ "src": "/SOBREAVISO/icon-96.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Nova Corrida",
+      "short_name": "Corrida",
+      "description": "Registrar nova corrida",
+      "url": "/SOBREAVISO/?nova-corrida",
+      "icons": [{ "src": "/SOBREAVISO/icon-96.png", "sizes": "96x96" }]
+    }
+  ]
+}
