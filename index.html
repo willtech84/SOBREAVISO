@@ -1,0 +1,2094 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Sobreaviso RX - Aplicativo</title>
+    
+    <!-- PWA Meta Tags ESSENCIAIS -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Sobreaviso RX">
+    <meta name="theme-color" content="#0056b3" id="theme-color-meta">
+    <meta name="description" content="Aplicativo para gestão de sobreaviso com relatórios PDF">
+    
+    <!-- Ícones -->
+    <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAABmJLR0QA/wD/AP+gvaeTAAAAB3RJTUUH6AsfFzsZm+1o+gAAAmZJREFUeN7t209IVFEUBfDfe2+mGQMzKQotCqKgrF2t2gS1adGqjYW1C2sX1q5Fm9q0adGqjRahCCIoCIqgKCKiIIL+Qf6MvyltXEzM18w7797L+X3v5b15980eRERE5D+Vl1sX+oB+oBtoA6qS5GqBBeA18Az4kCTnS4A+4AjwAngPjAF9wEBSXJ0wBpwEngM/gOfAUeB9UlydMAWcAp4D34GnwCngQ1JcnTAK9ABPgR/AU6AX+JgUVyesAgeAJ8A34AmwHxiU/2+f0A8MAR+BT8CAX/x8CgwBn4BPwEAaXJ3Q6y+021/8tL/QXt/4dYI2oA1oA9qANqANaAPagDagDWgD2oA2oA2oA1oA9qANqANaAPagDagDWgD2oA2oA2oA9qANqANaAPagDagDWgD2oA2oA2oA2oA2oA2oA2oA2oA2oA1oA9qANqANaAPagDagDWgD2oA2oA2oA2oA2oA2oA2oA2oA2oA2oA1oA9qANqANaAPagDagDWgD2oA2oA2oA2oA2oA2oA2oA2oA2oA2oA1oA9qANqANaAPagDagDWgD2oA2oA2oA2oA2oA2oA2oA2oA2oA2oA1oA9qANqANaAPagDahDVj2/98a8M43fr3A+zS4OmE1sA/4AHwC9gOr0uDqhLPAIPAJ+AgM/uLncWAQ+Ah8BMbT4OqESeAY8Az4DjwDjgMfpM/264Qx4CTwDPgBPAeOAR+S4uqEMaAfOAK8AN4D/UCPX/w8/YvP9usE1QOdwGHgJfAe6AQqkuR8C7AAvAE+AJ+A+SS5iIiIiPy7fAOhh2+8zL4bWQAAAABJRU5ErkJggg==">
+    <link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAABmJLR0QA/wD/AP+gvaeTAAAAB3RJTUUH6AsfFzsZm+1o+gAAAmZJREFUeN7t209IVFEUBfDfe2+mGQMzKQotCqKgrF2t2gS1adGqjYW1C2sX1q5Fm9q0adGqjRahCCIoCIqgKCKiIIL+Qf6MvyltXEzM18w7797L+X3v5b15980eRERE5D+Vl1sX+oB+oBtoA6qS5GqBBeA18Az4kCTnS4A+4AjwAngPjAF9wEBSXJ0wBpwEngM/gOfAUeB9UlydMAWcAp4D34GnwCngQ1JcnTAK9ABPgR/AU6AX+JgUVyesAgeAJ8A34AmwHxiU/2+f0A8MAR+BT8CAX/x8CgwBn4BPwEAaXJ3Q6y+021/8tL/QXt/4dYI2oA1oA9qANqANaAPagDagDWgD2oA2oA1oA9qANqANaAPagDagDWgD2oA2oA2oA9qANqANaAPagDagDWgD2oA2oA2oA2oA2oA2oA2oA2oA2oA1oA9qANqANaAPagDagDWgD2oA2oA2oA2oA2oA2oA2oA2oA2oA2oA1oA9qANqANaAPagDagDWgD2oA2oA2oA2oA2oA2oA2oA2oA2oA2oA1oA9qANqANaAPagDagDWgD2oA2oA2oA2oA2oA2oA2oA2oA2oA2oA1oA9qANqANaAPagDahDVj2/98a8M43fr3A+zS4OmE1sA/4AHwC9gOr0uDqhLPAIPAJ+AgM/uLncWAQ+Ah8BMbT4OqESeAY8Az4DjwDjgMfpM/264Qx4CTwDPgBPAeOAR+S4uqEMaAfOAK8AN4D/UCPX/w8/YvP9usE1QOdwGHgJfAe6AQqkuR8C7AAvAE+AJ+A+SS5iIiIiPy7fAOhh2+8zL4bWQAAAABJRU5ErkJggg==">
+
+    <!-- Manifest para PWA -->
+    <link rel="manifest" id="app-manifest">
+
+    <style>
+        /* ESTILOS GERAIS - VARIÁVEIS PARA TEMA */
+        :root {
+            --primary: #0056b3;
+            --primary-dark: #003d82;
+            --secondary: #6c757d;
+            --success: #28a745;
+            --danger: #dc3545;
+            --warning: #ffc107;
+            --info: #17a2b8;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --background: #f0f2f5;
+            --surface: #ffffff;
+            --text: #212529;
+            --text-secondary: #6c757d;
+            --border: #dee2e6;
+            --shadow: rgba(0,0,0,0.1);
+        }
+
+        /* TEMA ESCURO */
+        .tema-escuro {
+            --primary: #1e88e5;
+            --primary-dark: #1565c0;
+            --background: #121212;
+            --surface: #1e1e1e;
+            --text: #ffffff;
+            --text-secondary: #b0b0b0;
+            --border: #424242;
+            --shadow: rgba(0,0,0,0.3);
+            --light: #2d2d2d;
+            --dark: #f8f9fa;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        }
+        
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background-color: var(--background);
+            color: var(--text);
+            padding: 20px; 
+            margin: 0;
+            min-height: 100vh;
+        }
+        
+        .container { 
+            max-width: 1200px; 
+            margin: 0 auto; 
+            background: var(--surface); 
+            padding: 25px; 
+            border-radius: 10px; 
+            box-shadow: 0 2px 10px var(--shadow); 
+            border: 1px solid var(--border);
+        }
+        
+        /* BOTÃO INSTALAR APP - MELHORADO */
+        #installButton {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 9999;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border: none;
+            padding: 14px 24px;
+            border-radius: 50px;
+            box-shadow: 0 4px 15px rgba(0, 86, 179, 0.4);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: bold;
+            font-size: 16px;
+            animation: pulse 2s infinite;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+        }
+
+        #installButton.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        #installButton:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 6px 20px rgba(0, 86, 179, 0.6);
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 4px 15px rgba(0, 86, 179, 0.4); }
+            50% { box-shadow: 0 4px 20px rgba(0, 86, 179, 0.7); }
+            100% { box-shadow: 0 4px 15px rgba(0, 86, 179, 0.4); }
+        }
+        
+        /* CABEÇALHO E CONTROLES */
+        .app-header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom: 20px; 
+            flex-wrap: wrap; 
+            gap: 15px; 
+            border-bottom: 1px solid var(--border); 
+            padding-bottom: 15px; 
+        }
+        
+        .app-header h2 { 
+            margin: 0; 
+            color: var(--primary); 
+            font-size: 1.5rem; 
+        }
+        
+        .system-controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        /* BOTÃO TEMA */
+        .btn-tema {
+            background: var(--light);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.3s;
+        }
+
+        .btn-tema:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        /* MENU PRINCIPAL */
+        .main-menu {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            background: var(--light);
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+        
+        .menu-btn {
+            padding: 10px 20px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--text);
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .menu-btn:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .menu-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        /* ABAS */
+        .tab-content { 
+            display: none; 
+            animation: fadeIn 0.3s; 
+        }
+        
+        .tab-content.active { 
+            display: block; 
+        }
+        
+        @keyframes fadeIn { 
+            from { opacity: 0; } 
+            to { opacity: 1; } 
+        }
+        
+        /* FORMULÁRIOS */
+        .form-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); 
+            gap: 10px; 
+            margin-bottom: 20px; 
+            background: var(--light); 
+            padding: 15px; 
+            border-radius: 8px; 
+            border: 1px solid var(--border); 
+        }
+        
+        .form-group { 
+            display: flex; 
+            flex-direction: column; 
+        }
+        
+        label { 
+            margin-bottom: 4px; 
+            font-weight: 600; 
+            font-size: 0.8em; 
+            color: var(--text-secondary); 
+        }
+        
+        input, select, textarea { 
+            padding: 8px; 
+            border: 1px solid var(--border); 
+            border-radius: 4px; 
+            font-size: 14px; 
+            background: var(--surface);
+            color: var(--text);
+        }
+        
+        input:focus, select:focus, textarea:focus { 
+            border-color: var(--primary); 
+            outline: none; 
+            box-shadow: 0 0 0 3px rgba(0, 86, 179, 0.1);
+        }
+        
+        /* BOTÕES */
+        .btn { 
+            padding: 10px 20px; 
+            border: none; 
+            border-radius: 5px; 
+            font-weight: bold; 
+            color: white; 
+            cursor: pointer; 
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .btn-primary { background-color: var(--primary); }
+        .btn-primary:hover { background-color: var(--primary-dark); }
+        
+        .btn-success { background-color: var(--success); }
+        .btn-success:hover { background-color: #218838; }
+        
+        .btn-danger { background-color: var(--danger); }
+        .btn-danger:hover { background-color: #c82333; }
+        
+        .btn-warning { background-color: var(--warning); color: #212529; }
+        .btn-warning:hover { background-color: #e0a800; }
+        
+        .btn-info { background-color: var(--info); }
+        .btn-info:hover { background-color: #138496; }
+        
+        .btn-secondary { background-color: var(--secondary); }
+        .btn-secondary:hover { background-color: #545b62; }
+        
+        .btn-group { 
+            display: flex; 
+            gap: 10px; 
+            margin-bottom: 20px; 
+            align-items: center; 
+            flex-wrap: wrap;
+        }
+        
+        /* TABELAS */
+        .table-container {
+            overflow-x: auto;
+            margin-top: 20px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+        }
+        
+        table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            font-size: 0.85em; 
+        }
+        
+        th, td { 
+            border: 1px solid var(--border); 
+            padding: 8px; 
+            text-align: left; 
+            white-space: nowrap;
+        }
+        
+        th { 
+            background-color: var(--primary); 
+            color: white; 
+            position: sticky;
+            top: 0;
+        }
+        
+        tr:nth-child(even) { 
+            background-color: var(--light); 
+        }
+        
+        .actions-cell { 
+            display: flex; 
+            gap: 5px; 
+            justify-content: center; 
+        }
+        
+        .btn-icon { 
+            border: none; 
+            padding: 5px 8px; 
+            border-radius: 4px; 
+            cursor: pointer; 
+            color: white; 
+            font-size: 12px; 
+        }
+        
+        /* MODAL */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            overflow-y: auto;
+        }
+        
+        .modal-content {
+            background-color: var(--surface);
+            color: var(--text);
+            margin: 5% auto;
+            padding: 20px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+            border: 1px solid var(--border);
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .close-modal {
+            cursor: pointer;
+            font-size: 24px;
+            color: var(--text-secondary);
+            background: none;
+            border: none;
+            font-weight: bold;
+        }
+        
+        /* ÁREA DE IMPRESSÃO */
+        #area-impressao { 
+            display: none; 
+        }
+        
+        /* IMPRESSÃO PDF */
+        @media print {
+            body { 
+                background-color: white; 
+                padding: 0; 
+                margin: 0; 
+                font-family: Arial, sans-serif; 
+                color: black;
+            }
+            
+            .container, .main-menu, .modal, .btn-group, .system-controls, .user-info, #installButton { 
+                display: none !important; 
+            } 
+            
+            #area-impressao { 
+                display: block; 
+                padding: 20px; 
+                width: 100%; 
+            }
+            
+            .relatorio-header { 
+                text-align: center; 
+                margin-bottom: 20px; 
+                border: 1px solid #000; 
+                padding: 10px; 
+            }
+            
+            .relatorio-header h2 { 
+                margin: 5px 0; 
+                font-size: 16px; 
+                text-transform: uppercase; 
+            }
+            
+            .relatorio-header p { 
+                margin: 5px 0; 
+                font-size: 14px; 
+                font-weight: bold; 
+            }
+            
+            .table-print { 
+                width: 100%; 
+                border-collapse: collapse; 
+                margin-bottom: 20px; 
+                font-size: 11px; 
+            }
+            
+            .table-print th, .table-print td { 
+                border: 1px solid #000; 
+                padding: 4px; 
+                text-align: center; 
+            }
+            
+            .table-print th { 
+                background-color: #ddd; 
+                font-weight: bold; 
+            }
+            
+            .col-left { 
+                text-align: left !important; 
+            }
+            
+            .resumo-print { 
+                border: 1px solid #000; 
+                width: 50%; 
+                margin-top: 20px; 
+                font-size: 11px; 
+            }
+            
+            .resumo-print td { 
+                padding: 5px; 
+                border: 1px solid #000; 
+            }
+            
+            .resumo-title { 
+                background-color: #ddd; 
+                font-weight: bold; 
+                width: 50%; 
+            }
+            
+            .assinatura { 
+                margin-top: 50px; 
+                font-size: 10px; 
+                text-align: center; 
+                border-top: 1px solid #000; 
+                width: 60%; 
+                margin-left: auto; 
+                margin-right: auto; 
+                padding-top: 5px; 
+            }
+        }
+        
+        /* RESPONSIVIDADE */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .app-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .btn-group {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .main-menu {
+                flex-direction: column;
+            }
+            
+            .menu-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- BOTÃO INSTALAR APP -->
+<button id="installButton">
+    📱 Instalar App
+</button>
+
+<div class="container">
+    <!-- CABEÇALHO -->
+    <div class="app-header">
+        <div>
+            <h2>📱 Sobreaviso RX - Aplicativo</h2>
+            <small id="appStatus" style="color: var(--text-secondary);">Online</small>
+        </div>
+        
+        <div class="system-controls">
+            <button class="btn-tema" onclick="alternarTema()" id="btnTema">
+                <span id="temaIcon">🌙</span> <span id="temaTexto">Modo Escuro</span>
+            </button>
+            
+            <div class="user-info">
+                <div class="user-avatar" id="userAvatar">WK</div>
+                <div>
+                    <div id="userName">Willyam Krasinsky</div>
+                    <button class="btn btn-info btn-sm" onclick="abrirModal('configModal')">⚙️ Configurar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- MENU PRINCIPAL -->
+    <div class="main-menu">
+        <button class="menu-btn active" onclick="abrirAba('dashboard')">📊 Dashboard</button>
+        <button class="menu-btn" onclick="abrirAba('exames')">📋 Exames</button>
+        <button class="menu-btn" onclick="abrirAba('corridas')">🚗 Corridas</button>
+        <button class="menu-btn" onclick="abrirAba('relatorios')">📈 Relatórios</button>
+        <button class="menu-btn" onclick="abrirAba('backup')">💾 Backup</button>
+    </div>
+    
+    <!-- DASHBOARD -->
+    <div id="dashboard" class="tab-content active">
+        <div class="dashboard-stats">
+            <div style="background: var(--light); padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 1px solid var(--border);">
+                <h3 style="color: var(--primary); margin-bottom: 15px;">📊 Resumo Geral</h3>
+                <div id="dashboardStats"></div>
+            </div>
+        </div>
+        
+        <div class="quick-actions">
+            <h3 style="color: var(--text); margin-bottom: 15px;">⚡ Ações Rápidas</h3>
+            <div class="btn-group">
+                <button class="btn btn-primary" onclick="abrirAba('exames')">➕ Novo Exame</button>
+                <button class="btn btn-success" onclick="abrirAba('corridas')">➕ Nova Corrida</button>
+                <button class="btn btn-info" onclick="gerarRelatorioPDF()">🖨️ Gerar PDF</button>
+                <button class="btn btn-warning" onclick="fazerBackup()">💾 Backup</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- EXAMES -->
+    <div id="exames" class="tab-content">
+        <h3 style="color: var(--text); margin-bottom: 20px;">📋 Gerenciamento de Exames</h3>
+        
+        <div class="form-grid">
+            <div class="form-group"><label>Data *</label><input type="date" id="data"></div>
+            <div class="form-group"><label>Entrada</label><input type="time" id="hrEntrada"></div>
+            <div class="form-group"><label>Saída</label><input type="time" id="hrSaida"></div>
+            
+            <div class="form-group">
+                <label>Setor *</label>
+                <input type="text" id="setor" list="setoresLista" placeholder="Selecione ou Digite" oninput="this.value = this.value.toUpperCase()">
+                <datalist id="setoresLista">
+                    <option value="SUE">
+                    <option value="RIO NEGRO">
+                    <option value="UTI 1">
+                    <option value="UTI 2">
+                    <option value="UTI 3">
+                    <option value="UTI 4">
+                </datalist>
+            </div>
+            
+            <div class="form-group"><label>Exame *</label><input type="text" id="exame" placeholder="EX: TC CRANIO" oninput="this.value = this.value.toUpperCase()"></div>
+            <div class="form-group"><label>Paciente *</label><input type="text" id="paciente" placeholder="NOME DO PACIENTE" oninput="this.value = this.value.toUpperCase()"></div>
+        </div>
+
+        <div class="btn-group">
+            <button id="btnSalvarExame" class="btn btn-success" onclick="salvarExame()">💾 Salvar Exame</button>
+            <button id="btnCancelarExame" class="btn btn-secondary" onclick="cancelarEdicao()" style="display:none;">❌ Cancelar</button>
+            <button class="btn btn-danger" onclick="limparExames()">🗑️ Limpar Todos</button>
+        </div>
+
+        <div class="table-container">
+            <table id="tabelaExames">
+                <thead>
+                    <tr>
+                        <th>Data</th><th>Entrada</th><th>Saída</th><th>Tempo</th><th>Setor</th><th>Exame</th><th>Paciente</th><th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+    
+    <!-- CORRIDAS -->
+    <div id="corridas" class="tab-content">
+        <h3 style="color: var(--text); margin-bottom: 20px;">🚗 Gerenciamento de Corridas</h3>
+        
+        <div class="form-grid">
+            <div class="form-group"><label>Data *</label><input type="date" id="dataCorrida"></div>
+            <div class="form-group"><label>KM Rodados *</label><input type="number" step="0.1" id="kmCorrida" placeholder="ex: 2.2"></div>
+            <div class="form-group"><label>Observação</label><input type="text" id="obsCorrida" oninput="this.value = this.value.toUpperCase()"></div>
+        </div>
+
+        <div class="btn-group">
+            <button class="btn btn-success" onclick="adicionarCorrida()">💾 Salvar Corrida</button>
+            <button class="btn btn-danger" onclick="limparCorridas()">🗑️ Limpar Todas</button>
+        </div>
+
+        <div class="table-container">
+            <table id="tabelaCorridas">
+                <thead>
+                    <tr><th>Data</th><th>KM</th><th>Observação</th><th>Ações</th></tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        
+        <div class="summary-box" style="margin-top: 15px; background: var(--light); padding: 10px; border-radius: 5px; font-weight: bold; border: 1px solid var(--border);">
+            <span id="totalRegistrosCorridas">Registros: 0</span>
+            <span id="totalKm" style="margin-left: 20px;">Total KM: 0.0</span>
+        </div>
+    </div>
+    
+    <!-- RELATÓRIOS -->
+    <div id="relatorios" class="tab-content">
+        <h3 style="color: var(--text); margin-bottom: 20px;">📈 Gerar Relatórios</h3>
+        
+        <div class="form-grid">
+            <div class="form-group">
+                <label>Período do Relatório</label>
+                <input type="text" id="periodoInput" placeholder="Ex: 22/11/25 03:00 a 23/11 02:59">
+            </div>
+            <div class="form-group">
+                <label>Data Inicial</label>
+                <input type="date" id="dataInicio">
+            </div>
+            <div class="form-group">
+                <label>Data Final</label>
+                <input type="date" id="dataFim">
+            </div>
+        </div>
+        
+        <div class="btn-group">
+            <button class="btn btn-primary" onclick="gerarRelatorioPeriodo()">🔍 Gerar Relatório</button>
+            <button class="btn btn-info" onclick="gerarRelatorioPDF()">📄 Exportar PDF</button>
+            <button class="btn btn-success" onclick="exportarExcel()">📊 Exportar Excel</button>
+        </div>
+        
+        <div id="relatorioResultado" style="margin-top: 20px;"></div>
+    </div>
+    
+    <!-- BACKUP -->
+    <div id="backup" class="tab-content">
+        <h3 style="color: var(--text); margin-bottom: 20px;">💾 Backup e Restauração</h3>
+        
+        <div class="form-grid" style="grid-template-columns: 1fr;">
+            <div class="form-group">
+                <label>Backup Automático</label>
+                <select id="tempoBackup" onchange="configurarAutoBackup()">
+                    <option value="0">Desativado</option>
+                    <option value="60000">1 Minuto</option>
+                    <option value="300000">5 Minutos</option>
+                    <option value="600000">10 Minutos</option>
+                    <option value="3600000">1 Hora</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label>Arquivo de Restauração (.json)</label>
+                <input type="file" id="fileRestore" accept=".json">
+            </div>
+        </div>
+        
+        <div class="btn-group">
+            <button class="btn btn-primary" onclick="fazerBackup()">💾 Criar Backup</button>
+            <button class="btn btn-success" onclick="restaurarBackup()">📂 Restaurar Backup</button>
+            <button class="btn btn-warning" onclick="abrirModal('configModal')">⚙️ Mais Configurações</button>
+        </div>
+        
+        <div id="backupInfo" style="margin-top: 20px; padding: 15px; background: var(--light); border-radius: 5px; border: 1px solid var(--border);">
+            <h4>Últimos Backups</h4>
+            <div id="listaBackups"></div>
+        </div>
+    </div>
+</div>
+
+<!-- ÁREA DE IMPRESSÃO (OCULTA) -->
+<div id="area-impressao">
+    <div class="relatorio-header">
+        <h2>RELATÓRIO SOBRE AVISO - <span id="print-usuario"></span></h2>
+        <p id="print-datas">DATAS:</p>
+        <p id="print-gerado-em">Gerado em: </p>
+    </div>
+
+    <table class="table-print">
+        <thead>
+            <tr>
+                <th>DATA</th><th>HR ENT</th><th>HR SAIDA</th><th>TEMPO</th><th>SETOR</th><th>EXAMES</th><th>PACIENTES</th>
+            </tr>
+        </thead>
+        <tbody id="tbody-print"></tbody>
+    </table>
+
+    <table class="resumo-print">
+        <tr><td class="resumo-title">QTD CORRIDAS</td><td id="print-qtd-corridas">0</td></tr>
+        <tr><td class="resumo-title">TOTAL KM</td><td id="print-total-km">0,0</td></tr>
+        <tr><td class="resumo-title">TOTAL HORAS</td><td id="print-total-horas">00:00</td></tr>
+    </table>
+    
+    <div class="assinatura">Assinatura do Responsável</div>
+</div>
+
+<!-- MODAL CONFIGURAÇÕES -->
+<div id="configModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>⚙️ Configurações do Sistema</h3>
+            <button class="close-modal" onclick="fecharModal('configModal')">&times;</button>
+        </div>
+        
+        <div class="form-grid">
+            <div class="form-group">
+                <label>Tema da Interface</label>
+                <select id="temaApp">
+                    <option value="claro">Claro</option>
+                    <option value="escuro">Escuro</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label>Notificações</label>
+                <select id="notificacoes">
+                    <option value="sim">Ativadas</option>
+                    <option value="nao">Desativadas</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label>Formato de Data</label>
+                <select id="formatoData">
+                    <option value="dd/mm/yyyy">DD/MM/AAAA</option>
+                    <option value="mm/dd/yyyy">MM/DD/AAAA</option>
+                </select>
+            </div>
+        </div>
+        
+        <div style="margin: 20px 0; padding: 15px; background: var(--light); border-radius: 5px; border: 1px solid var(--border);">
+            <h4>Informações do Aplicativo</h4>
+            <p><strong>Versão:</strong> 2.0.0</p>
+            <p><strong>Banco de Dados:</strong> <span id="dbStatus">Carregando...</span></p>
+            <p><strong>Armazenamento:</strong> <span id="storageStatus">Calculando...</span></p>
+            <p><strong>Status PWA:</strong> <span id="pwaStatus">Verificando...</span></p>
+            <p><strong>Tema Atual:</strong> <span id="currentTheme">Claro</span></p>
+        </div>
+        
+        <div class="btn-group">
+            <button class="btn btn-success" onclick="salvarConfiguracoes()">💾 Salvar Configurações</button>
+            <button class="btn btn-secondary" onclick="fecharModal('configModal')">❌ Fechar</button>
+            <button class="btn btn-danger" onclick="limparTudo()" title="Limpar todos os dados">🗑️ Limpar Todos os Dados</button>
+        </div>
+    </div>
+</div>
+
+<script>
+// ==================== VARIÁVEIS GLOBAIS ====================
+let idEdicaoExame = null;
+let autoBackupInterval = null;
+let currentUser = null;
+let db;
+let deferredPrompt = null;
+let isOnline = navigator.onLine;
+let temaAtual = 'claro';
+
+// ==================== INICIALIZAÇÃO ====================
+document.addEventListener('DOMContentLoaded', async () => {
+    console.log('Inicializando aplicativo...');
+    
+    // Configurar PWA PRIMEIRO
+    configurarPWA();
+    
+    // Verificar conexão
+    atualizarStatusConexao();
+    window.addEventListener('online', atualizarStatusConexao);
+    window.addEventListener('offline', atualizarStatusConexao);
+    
+    // Carregar tema SALVO
+    carregarTemaSalvo();
+    
+    // Inicializar banco de dados
+    await inicializarBancoDados();
+    
+    // Carregar dados
+    carregarUsuarioAtual();
+    carregarExames();
+    carregarCorridas();
+    carregarConfiguracoes();
+    atualizarDashboard();
+    carregarListaBackups();
+    
+    // Evento para instalação PWA - DEVE VIR DEPOIS do service worker
+    window.addEventListener('beforeinstallprompt', (e) => {
+        console.log('Evento beforeinstallprompt disparado!');
+        e.preventDefault();
+        deferredPrompt = e;
+        mostrarBotaoInstalar();
+        
+        // Forçar mostrar o botão após 3 segundos
+        setTimeout(() => {
+            if (deferredPrompt) {
+                mostrarBotaoInstalar();
+            }
+        }, 3000);
+    });
+    
+    // Verificar se já está instalado
+    if (window.matchMedia('(display-mode: standalone)').matches || 
+        window.navigator.standalone === true) {
+        console.log('Aplicativo já instalado');
+        document.getElementById('appStatus').textContent = 'Aplicativo Instalado';
+        document.getElementById('installButton').style.display = 'none';
+    }
+    
+    // Adicionar listener para instalação
+    window.addEventListener('appinstalled', () => {
+        console.log('Aplicativo instalado com sucesso!');
+        document.getElementById('installButton').style.display = 'none';
+        alert('Aplicativo instalado com sucesso! Agora ele aparecerá na sua tela inicial.');
+    });
+    
+    console.log('Aplicativo inicializado com sucesso!');
+});
+
+function atualizarStatusConexao() {
+    isOnline = navigator.onLine;
+    const statusEl = document.getElementById('appStatus');
+    if (isOnline) {
+        statusEl.textContent = 'Online';
+        statusEl.style.color = 'var(--success)';
+    } else {
+        statusEl.textContent = 'Offline';
+        statusEl.style.color = 'var(--warning)';
+    }
+}
+
+// ==================== PWA INSTALAÇÃO - CORRIGIDO ====================
+function configurarPWA() {
+    console.log('Configurando PWA...');
+    
+    // Criar Manifest dinâmico
+    const manifest = {
+        "name": "Sobreaviso RX",
+        "short_name": "Sobreaviso",
+        "description": "Aplicativo para gestão de sobreaviso com relatórios PDF",
+        "start_url": "./",
+        "display": "standalone",
+        "background_color": "#ffffff",
+        "theme_color": "#0056b3",
+        "orientation": "portrait",
+        "scope": "./",
+        "icons": [
+            {
+                "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAABmJLR0QA/wD/AP+gvaeTAAAAB3RJTUUH6AsfFzsZm+1o+gAAAmZJREFUeN7t209IVFEUBfDfe2+mGQMzKQotCqKgrF2t2gS1adGqjYW1C2sX1q5Fm9q0adGqjRahCCIoCIqgKCKiIIL+Qf6MvyltXEzM18w7797L+X3v5b15980eRERE5D+Vl1sX+oB+oBtoA6qS5GqBBeA18Az4kCTnS4A+4AjwAngPjAF9wEBSXJ0wBpwEngM/gOfAUeB9UlydMAWcAp4D34GnwCngQ1JcnTAK9ABPgR/AU6AX+JgUVyesAgeAJ8A34AmwHxiU/2+f0A8MAR+BT8CAX/x8CgwBn4BPwEAaXJ3Q6y+021/8tL/QXt/4dYI2oA1oA9qANqANaAPagDagDWgD2oA2oA1oA9qANqANaAPagDagDWgD2oA2oA2oA9qANqANaAPagDagDWgD2oA2oA2oA2oA2oA2oA2oA2oA2oA1oA1oA9qANqANaAPagDagDWgD2oA2oA2oA2oA2oA2oA2oA2oA2oA1oA1oA9qANqANaAPagDagDWgD2oA2oA2oA2oA2oA2oA2oA2oA2oA2oA1oA9qANqANaAPagDagDWgD2oA2oA2oA2oA2oA2oA2oA2oA2oA2oA1oA9qANqANaAPagDahDVj2/98a8M43fr3A+zS4OmE1sA/4AHwC9gOr0uDqhLPAIPAJ+AgM/uLncWAQ+Ah8BMbT4OqESeAY8Az4DjwDjgMfpM/264Qx4CTwDPgBPAeOAR+S4uqEMaAfOAK8AN4D/UCPX/w8/YvP9usE1QOdwGHgJfAe6AQqkuR8C7AAvAE+AJ+A+SS5iIiIiPy7fAOhh2+8zL4bWQAAAABJRU5ErkJggg==",
+                "sizes": "192x192",
+                "type": "image/png"
+            },
+            {
+                "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAABmJLR0QA/wD/AP+gvaeTAAAAB3RJTUUH6AsfFzsZm+1o+gAAAmZJREFUeN7t209IVFEUBfDfe2+mGQMzKQotCqKgrF2t2gS1adGqjYW1C2sX1q5Fm9q0adGqjRahCCIoCIqgKCKiIIL+Qf6MvyltXEzM18w7797L+X3v5b15980eRERE5D+Vl1sX+oB+oBtoA6qS5GqBBeA18Az4kCTnS4A+4AjwAngPjAF9wEBSXJ0wBpwEngM/gOfAUeB9UlydMAWcAp4D34GnwCngQ1JcnTAK9ABPgR/AU6AX+JgUVyesAgeAJ8A34AmwHxiU/2+f0A8MAR+BT8CAX/x8CgwBn4BPwEAaXJ3Q6y+021/8tL/QXt/4dYI2oA1oA9qANqANaAPagDagDWgD2oA2oA2oA1oA9qANqANaAPagDagDWgD2oA2oA2oA9qANqANaAPagDagDWgD2oA2oA2oA2oA2oA2oA2oA2oA2oA1oA1oA9qANqANaAPagDagDWgD2oA2oA2oA2oA2oA2oA2oA2oA2oA1oA1oA9qANqANaAPagDagDWgD2oA2oA2oA2oA2oA2oA2oA2oA2oA2oA1oA9qANqANaAPagDagDWgD2oA2oA2oA2oA2oA2oA2oA2oA2oA2oA1oA9qANqANaAPagDahDVj2/98a8M43fr3A+zS4OmE1sA/4AHwC9gOr0uDqhLPAIPAJ+AgM/uLncWAQ+Ah8BMbT4OqESeAY8Az4DjwDjgMfpM/264Qx4CTwDPgBPAeOAR+S4uqEMaAfOAK8AN4D/UCPX/w8/YvP9usE1QOdwGHgJfAe6AQqkuR8C7AAvAE+AJ+A+SS5iIiIiPy7fAOhh2+8zL4bWQAAAABJRU5ErkJggg==",
+                "sizes": "512x512",
+                "type": "image/png"
+            }
+        ]
+    };
+
+    // Criar blob do manifest
+    const manifestBlob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
+    const manifestURL = URL.createObjectURL(manifestBlob);
+    
+    // Adicionar manifest ao documento
+    const link = document.getElementById('app-manifest');
+    link.href = manifestURL;
+    
+    console.log('Manifest configurado:', manifestURL);
+    
+    // Registrar Service Worker
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('sw.js')
+            .then(registration => {
+                console.log('Service Worker registrado com sucesso:', registration.scope);
+                document.getElementById('pwaStatus').textContent = 'Service Worker Ativo';
+                
+                // Verificar se já está instalado
+                if (registration.scope.includes('127.0.0.1') || registration.scope.includes('localhost') || registration.scope.includes('file://')) {
+                    console.log('Executando localmente - instalador pode não aparecer');
+                }
+            })
+            .catch(error => {
+                console.log('Falha ao registrar Service Worker:', error);
+                document.getElementById('pwaStatus').textContent = 'Service Worker Inativo';
+                
+                // Criar Service Worker inline como fallback
+                criarServiceWorkerInline();
+            });
+    } else {
+        console.log('Service Workers não suportados');
+        document.getElementById('pwaStatus').textContent = 'Não Suportado';
+    }
+}
+
+function criarServiceWorkerInline() {
+    const swCode = `
+        self.addEventListener('install', event => {
+            console.log('[Service Worker] Instalando...');
+            self.skipWaiting();
+        });
+
+        self.addEventListener('activate', event => {
+            console.log('[Service Worker] Ativo e pronto!');
+            event.waitUntil(clients.claim());
+        });
+
+        self.addEventListener('fetch', event => {
+            console.log('[Service Worker] Fetching:', event.request.url);
+            event.respondWith(fetch(event.request));
+        });
+    `;
+
+    const blob = new Blob([swCode], { type: 'application/javascript' });
+    const swURL = URL.createObjectURL(blob);
+    
+    navigator.serviceWorker.register(swURL, { scope: './' })
+        .then(() => console.log('Service Worker inline registrado'))
+        .catch(err => console.log('Erro SW inline:', err));
+}
+
+function mostrarBotaoInstalar() {
+    const installButton = document.getElementById('installButton');
+    
+    // Só mostrar se temos o prompt de instalação
+    if (deferredPrompt) {
+        installButton.classList.add('show');
+        
+        installButton.onclick = async () => {
+            if (!deferredPrompt) {
+                alert('Instalação não disponível no momento.');
+                return;
+            }
+            
+            console.log('Solicitando instalação...');
+            
+            // Mostrar prompt de instalação
+            deferredPrompt.prompt();
+            
+            // Aguardar escolha do usuário
+            const choiceResult = await deferredPrompt.userChoice;
+            console.log('Escolha do usuário:', choiceResult.outcome);
+            
+            if (choiceResult.outcome === 'accepted') {
+                console.log('Usuário aceitou a instalação');
+                installButton.style.display = 'none';
+            } else {
+                console.log('Usuário recusou a instalação');
+            }
+            
+            // Limpar prompt
+            deferredPrompt = null;
+        };
+    } else {
+        console.log('Prompt de instalação não disponível');
+        installButton.style.display = 'none';
+    }
+}
+
+// ==================== TEMA ESCURO/CLARO - CORRIGIDO ====================
+function carregarTemaSalvo() {
+    const temaSalvo = localStorage.getItem('temaApp');
+    
+    if (temaSalvo === 'escuro') {
+        aplicarTema('escuro');
+    } else {
+        aplicarTema('claro');
+    }
+}
+
+function alternarTema() {
+    if (temaAtual === 'claro') {
+        aplicarTema('escuro');
+        salvarTema('escuro');
+    } else {
+        aplicarTema('claro');
+        salvarTema('claro');
+    }
+}
+
+function aplicarTema(tema) {
+    temaAtual = tema;
+    
+    if (tema === 'escuro') {
+        document.body.classList.add('tema-escuro');
+        document.getElementById('temaIcon').textContent = '☀️';
+        document.getElementById('temaTexto').textContent = 'Modo Claro';
+        document.getElementById('currentTheme').textContent = 'Escuro';
+        
+        // Atualizar meta tag theme-color
+        document.getElementById('theme-color-meta').setAttribute('content', '#121212');
+    } else {
+        document.body.classList.remove('tema-escuro');
+        document.getElementById('temaIcon').textContent = '🌙';
+        document.getElementById('temaTexto').textContent = 'Modo Escuro';
+        document.getElementById('currentTheme').textContent = 'Claro';
+        
+        // Atualizar meta tag theme-color
+        document.getElementById('theme-color-meta').setAttribute('content', '#0056b3');
+    }
+    
+    // Atualizar select no modal
+    const selectTema = document.getElementById('temaApp');
+    if (selectTema) {
+        selectTema.value = tema;
+    }
+}
+
+function salvarTema(tema) {
+    localStorage.setItem('temaApp', tema);
+    console.log('Tema salvo:', tema);
+}
+
+// ==================== BANCO DE DADOS ====================
+async function inicializarBancoDados() {
+    return new Promise((resolve, reject) => {
+        const request = indexedDB.open('SobreavisoDB', 3);
+        
+        request.onupgradeneeded = (e) => {
+            db = e.target.result;
+            console.log('Criando/atualizando banco de dados...');
+            
+            if (!db.objectStoreNames.contains('exames')) {
+                const examesStore = db.createObjectStore('exames', { keyPath: 'id', autoIncrement: true });
+                examesStore.createIndex('data', 'data', { unique: false });
+                examesStore.createIndex('setor', 'setor', { unique: false });
+            }
+            
+            if (!db.objectStoreNames.contains('corridas')) {
+                const corridasStore = db.createObjectStore('corridas', { keyPath: 'id', autoIncrement: true });
+                corridasStore.createIndex('data', 'data', { unique: false });
+            }
+            
+            if (!db.objectStoreNames.contains('configuracoes')) {
+                db.createObjectStore('configuracoes', { keyPath: 'chave' });
+            }
+            
+            if (!db.objectStoreNames.contains('backups')) {
+                db.createObjectStore('backups', { keyPath: 'id', autoIncrement: true });
+            }
+        };
+        
+        request.onsuccess = (e) => {
+            db = e.target.result;
+            console.log('Banco de dados inicializado com sucesso');
+            document.getElementById('dbStatus').textContent = 'Conectado';
+            atualizarStatusArmazenamento();
+            resolve(db);
+        };
+        
+        request.onerror = (e) => {
+            console.error('Erro ao abrir banco de dados:', e.target.error);
+            document.getElementById('dbStatus').textContent = 'Erro de conexão';
+            reject(e.target.error);
+        };
+    });
+}
+
+async function atualizarStatusArmazenamento() {
+    if (!navigator.storage || !navigator.storage.estimate) {
+        document.getElementById('storageStatus').textContent = 'Não disponível';
+        return;
+    }
+    
+    try {
+        const estimate = await navigator.storage.estimate();
+        const used = (estimate.usage / (1024 * 1024)).toFixed(2);
+        const quota = (estimate.quota / (1024 * 1024)).toFixed(2);
+        document.getElementById('storageStatus').textContent = `${used} MB usados de ${quota} MB`;
+    } catch (error) {
+        document.getElementById('storageStatus').textContent = 'Erro ao calcular';
+    }
+}
+
+// Funções genéricas para operações no banco
+function salvarNoBanco(storeName, dados) {
+    return new Promise((resolve, reject) => {
+        if (!db) {
+            reject(new Error('Banco de dados não inicializado'));
+            return;
+        }
+        
+        const transaction = db.transaction([storeName], 'readwrite');
+        const store = transaction.objectStore(storeName);
+        
+        let request;
+        if (dados.id) {
+            request = store.put(dados);
+        } else {
+            request = store.add(dados);
+        }
+        
+        request.onsuccess = () => {
+            console.log(`Dados salvos em ${storeName}:`, dados);
+            resolve(request.result);
+        };
+        
+        request.onerror = (e) => {
+            console.error(`Erro ao salvar em ${storeName}:`, e.target.error);
+            reject(e.target.error);
+        };
+    });
+}
+
+function listarDoBanco(storeName) {
+    return new Promise((resolve, reject) => {
+        if (!db) {
+            reject(new Error('Banco de dados não inicializado'));
+            return;
+        }
+        
+        const transaction = db.transaction([storeName], 'readonly');
+        const store = transaction.objectStore(storeName);
+        const request = store.getAll();
+        
+        request.onsuccess = () => resolve(request.result);
+        request.onerror = (e) => reject(e.target.error);
+    });
+}
+
+function deletarDoBanco(storeName, id) {
+    return new Promise((resolve, reject) => {
+        if (!db) {
+            reject(new Error('Banco de dados não inicializado'));
+            return;
+        }
+        
+        const transaction = db.transaction([storeName], 'readwrite');
+        const store = transaction.objectStore(storeName);
+        const request = store.delete(id);
+        
+        request.onsuccess = () => resolve(true);
+        request.onerror = (e) => reject(e.target.error);
+    });
+}
+
+function limparStore(storeName) {
+    return new Promise((resolve, reject) => {
+        if (!db) {
+            reject(new Error('Banco de dados não inicializado'));
+            return;
+        }
+        
+        const transaction = db.transaction([storeName], 'readwrite');
+        const store = transaction.objectStore(storeName);
+        const request = store.clear();
+        
+        request.onsuccess = () => {
+            console.log(`Store ${storeName} limpa`);
+            resolve(true);
+        };
+        
+        request.onerror = (e) => reject(e.target.error);
+    });
+}
+
+// ==================== EXAMES ====================
+async function salvarExame() {
+    const data = document.getElementById('data').value;
+    const hrEntrada = document.getElementById('hrEntrada').value;
+    const hrSaida = document.getElementById('hrSaida').value;
+    const setor = document.getElementById('setor').value.toUpperCase();
+    const exame = document.getElementById('exame').value.toUpperCase();
+    const paciente = document.getElementById('paciente').value.toUpperCase();
+    
+    if (!data || !setor || !exame || !paciente) {
+        alert('Preencha todos os campos obrigatórios (*)!');
+        return;
+    }
+    
+    let tempo = "";
+    if (hrEntrada && hrSaida) {
+        tempo = calcularDiferencaHoras(hrEntrada, hrSaida);
+    }
+    
+    const registro = {
+        data,
+        hrEntrada,
+        hrSaida,
+        tempo,
+        setor,
+        exame,
+        paciente,
+        usuarioId: currentUser?.id || 1,
+        criadoEm: new Date().toISOString()
+    };
+    
+    if (idEdicaoExame) {
+        registro.id = idEdicaoExame;
+    }
+    
+    try {
+        await salvarNoBanco('exames', registro);
+        alert(idEdicaoExame ? 'Exame atualizado com sucesso!' : 'Exame salvo com sucesso!');
+        
+        cancelarEdicao();
+        carregarExames();
+        atualizarDashboard();
+    } catch (error) {
+        console.error('Erro ao salvar exame:', error);
+        alert('Erro ao salvar exame.');
+    }
+}
+
+async function carregarExames() {
+    try {
+        const exames = await listarDoBanco('exames');
+        renderizarExames(exames);
+    } catch (error) {
+        console.error('Erro ao carregar exames:', error);
+    }
+}
+
+function renderizarExames(exames) {
+    const tbody = document.querySelector('#tabelaExames tbody');
+    tbody.innerHTML = '';
+    
+    if (exames.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="8" style="text-align: center;">Nenhum exame cadastrado</td></tr>';
+        return;
+    }
+    
+    exames.sort((a, b) => new Date(b.data) - new Date(a.data));
+    
+    exames.forEach(exame => {
+        const row = `
+            <tr>
+                <td>${fmtData(exame.data)}</td>
+                <td>${exame.hrEntrada || '-'}</td>
+                <td>${exame.hrSaida || '-'}</td>
+                <td><strong>${exame.tempo || '-'}</strong></td>
+                <td>${exame.setor}</td>
+                <td>${exame.exame}</td>
+                <td>${exame.paciente}</td>
+                <td class="actions-cell">
+                    <button class="btn-icon btn-warning" onclick="editarExame(${exame.id})" title="Editar">✏️</button>
+                    <button class="btn-icon btn-danger" onclick="deletarExame(${exame.id})" title="Excluir">🗑️</button>
+                </td>
+            </tr>
+        `;
+        tbody.innerHTML += row;
+    });
+}
+
+async function editarExame(id) {
+    try {
+        const exame = await obterDoBanco('exames', id);
+        if (!exame) {
+            alert('Exame não encontrado!');
+            return;
+        }
+        
+        document.getElementById('data').value = exame.data;
+        document.getElementById('hrEntrada').value = exame.hrEntrada;
+        document.getElementById('hrSaida').value = exame.hrSaida;
+        document.getElementById('setor').value = exame.setor;
+        document.getElementById('exame').value = exame.exame;
+        document.getElementById('paciente').value = exame.paciente;
+        
+        idEdicaoExame = id;
+        document.getElementById('btnSalvarExame').textContent = '💾 Atualizar Exame';
+        document.getElementById('btnCancelarExame').style.display = 'inline-block';
+        
+        abrirAba('exames');
+    } catch (error) {
+        console.error('Erro ao carregar exame para edição:', error);
+        alert('Erro ao carregar exame para edição.');
+    }
+}
+
+async function deletarExame(id) {
+    if (!confirm('Tem certeza que deseja excluir este exame?\nEsta ação não pode ser desfeita.')) {
+        return;
+    }
+    
+    try {
+        await deletarDoBanco('exames', id);
+        alert('Exame excluído com sucesso!');
+        carregarExames();
+        atualizarDashboard();
+        
+        if (idEdicaoExame === id) {
+            cancelarEdicao();
+        }
+    } catch (error) {
+        console.error('Erro ao excluir exame:', error);
+        alert('Erro ao excluir exame.');
+    }
+}
+
+function cancelarEdicao() {
+    idEdicaoExame = null;
+    
+    const campos = ['data', 'hrEntrada', 'hrSaida', 'setor', 'exame', 'paciente'];
+    campos.forEach(campo => {
+        document.getElementById(campo).value = '';
+    });
+    
+    document.getElementById('btnSalvarExame').textContent = '💾 Salvar Exame';
+    document.getElementById('btnCancelarExame').style.display = 'none';
+}
+
+async function limparExames() {
+    if (!confirm('ATENÇÃO!\n\nTem certeza que deseja excluir TODOS os exames?\nEsta ação não pode ser desfeita!')) {
+        return;
+    }
+    
+    try {
+        await limparStore('exames');
+        alert('Todos os exames foram excluídos!');
+        carregarExames();
+        atualizarDashboard();
+        cancelarEdicao();
+    } catch (error) {
+        console.error('Erro ao limpar exames:', error);
+        alert('Erro ao limpar exames.');
+    }
+}
+
+// ==================== CORRIDAS ====================
+async function adicionarCorrida() {
+    const data = document.getElementById('dataCorrida').value;
+    const km = parseFloat(document.getElementById('kmCorrida').value);
+    const obs = document.getElementById('obsCorrida').value.toUpperCase();
+    
+    if (!data || isNaN(km) || km <= 0) {
+        alert('Preencha a data e KM corretamente!');
+        return;
+    }
+    
+    const corrida = {
+        data,
+        km,
+        obs,
+        usuarioId: currentUser?.id || 1,
+        criadoEm: new Date().toISOString()
+    };
+    
+    try {
+        await salvarNoBanco('corridas', corrida);
+        
+        document.getElementById('dataCorrida').value = '';
+        document.getElementById('kmCorrida').value = '';
+        document.getElementById('obsCorrida').value = '';
+        
+        alert('Corrida salva com sucesso!');
+        carregarCorridas();
+        atualizarDashboard();
+    } catch (error) {
+        console.error('Erro ao salvar corrida:', error);
+        alert('Erro ao salvar corrida.');
+    }
+}
+
+async function carregarCorridas() {
+    try {
+        const corridas = await listarDoBanco('corridas');
+        renderizarCorridas(corridas);
+    } catch (error) {
+        console.error('Erro ao carregar corridas:', error);
+    }
+}
+
+function renderizarCorridas(corridas) {
+    const tbody = document.querySelector('#tabelaCorridas tbody');
+    tbody.innerHTML = '';
+    
+    if (corridas.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="4" style="text-align: center;">Nenhuma corrida cadastrada</td></tr>';
+        
+        document.getElementById('totalRegistrosCorridas').textContent = 'Registros: 0';
+        document.getElementById('totalKm').textContent = 'Total KM: 0.0';
+        return;
+    }
+    
+    corridas.sort((a, b) => new Date(b.data) - new Date(a.data));
+    
+    let totalKm = 0;
+    
+    corridas.forEach(corrida => {
+        totalKm += corrida.km || 0;
+        const row = `
+            <tr>
+                <td>${fmtData(corrida.data)}</td>
+                <td>${corrida.km.toFixed(1)} KM</td>
+                <td>${corrida.obs || '-'}</td>
+                <td class="actions-cell">
+                    <button class="btn-icon btn-danger" onclick="deletarCorrida(${corrida.id})" title="Excluir">🗑️</button>
+                </td>
+            </tr>
+        `;
+        tbody.innerHTML += row;
+    });
+    
+    document.getElementById('totalRegistrosCorridas').textContent = `Registros: ${corridas.length}`;
+    document.getElementById('totalKm').textContent = `Total KM: ${totalKm.toFixed(1)}`;
+}
+
+async function deletarCorrida(id) {
+    if (!confirm('Excluir esta corrida?')) return;
+    
+    try {
+        await deletarDoBanco('corridas', id);
+        carregarCorridas();
+        atualizarDashboard();
+    } catch (error) {
+        console.error('Erro ao excluir corrida:', error);
+        alert('Erro ao excluir corrida.');
+    }
+}
+
+async function limparCorridas() {
+    if (!confirm('Limpar TODAS as corridas?\nEsta ação não pode ser desfeita!')) return;
+    
+    try {
+        await limparStore('corridas');
+        alert('Todas as corridas foram excluídas!');
+        carregarCorridas();
+        atualizarDashboard();
+    } catch (error) {
+        console.error('Erro ao limpar corridas:', error);
+        alert('Erro ao limpar corridas.');
+    }
+}
+
+// ==================== BACKUP E RESTAURAÇÃO ====================
+async function fazerBackup() {
+    try {
+        const dados = {
+            exames: await listarDoBanco('exames'),
+            corridas: await listarDoBanco('corridas'),
+            configuracoes: await listarDoBanco('configuracoes'),
+            periodo: document.getElementById('periodoInput').value || "",
+            backupDate: new Date().toISOString(),
+            appVersion: "2.0.0",
+            tema: temaAtual
+        };
+        
+        const backupRecord = {
+            timestamp: new Date().toISOString(),
+            filename: `backup_${new Date().toLocaleDateString('pt-BR').replace(/\//g, '-')}.json`,
+            dataSize: JSON.stringify(dados).length
+        };
+        
+        await salvarNoBanco('backups', backupRecord);
+        
+        const blob = new Blob([JSON.stringify(dados, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `sobreaviso_backup_${new Date().toISOString().slice(0, 10)}.json`;
+        
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+        
+        carregarListaBackups();
+        
+        alert('Backup criado com sucesso! O arquivo foi salvo na sua pasta de downloads.');
+    } catch (error) {
+        console.error('Erro ao criar backup:', error);
+        alert('Erro ao criar backup: ' + error.message);
+    }
+}
+
+async function restaurarBackup() {
+    const fileInput = document.getElementById('fileRestore');
+    const file = fileInput.files[0];
+    
+    if (!file) {
+        alert('Selecione um arquivo de backup para restaurar!');
+        return;
+    }
+    
+    if (!confirm('ATENÇÃO!\n\nEsta ação irá substituir todos os dados atuais pelos dados do backup.\nTem certeza que deseja continuar?')) {
+        return;
+    }
+    
+    try {
+        const fileContent = await lerArquivo(file);
+        const dados = JSON.parse(fileContent);
+        
+        if (!dados.exames || !dados.corridas) {
+            throw new Error('Arquivo de backup inválido ou corrompido.');
+        }
+        
+        await limparStore('exames');
+        await limparStore('corridas');
+        await limparStore('configuracoes');
+        
+        for (const exame of dados.exames) {
+            await salvarNoBanco('exames', exame);
+        }
+        
+        for (const corrida of dados.corridas) {
+            await salvarNoBanco('corridas', corrida);
+        }
+        
+        if (dados.configuracoes && Array.isArray(dados.configuracoes)) {
+            for (const config of dados.configuracoes) {
+                await salvarNoBanco('configuracoes', config);
+            }
+        }
+        
+        if (dados.periodo) {
+            document.getElementById('periodoInput').value = dados.periodo;
+        }
+        
+        if (dados.tema) {
+            aplicarTema(dados.tema);
+            salvarTema(dados.tema);
+        }
+        
+        carregarExames();
+        carregarCorridas();
+        carregarConfiguracoes();
+        atualizarDashboard();
+        carregarListaBackups();
+        
+        fileInput.value = '';
+        
+        alert('Backup restaurado com sucesso! Os dados foram carregados.');
+    } catch (error) {
+        console.error('Erro ao restaurar backup:', error);
+        alert('Erro ao restaurar backup: ' + error.message);
+    }
+}
+
+function lerArquivo(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = (e) => resolve(e.target.result);
+        reader.onerror = (e) => reject(new Error('Erro ao ler arquivo'));
+        reader.readAsText(file);
+    });
+}
+
+async function carregarListaBackups() {
+    try {
+        const backups = await listarDoBanco('backups');
+        const listaEl = document.getElementById('listaBackups');
+        
+        if (backups.length === 0) {
+            listaEl.innerHTML = '<p>Nenhum backup criado ainda.</p>';
+            return;
+        }
+        
+        backups.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+        
+        let html = '<ul style="list-style: none; padding: 0;">';
+        backups.slice(0, 5).forEach(backup => {
+            const date = new Date(backup.timestamp);
+            const dateStr = date.toLocaleString('pt-BR');
+            html += `
+                <li style="margin-bottom: 10px; padding: 10px; background: var(--surface); border-radius: 5px; border: 1px solid var(--border);">
+                    <strong>${backup.filename}</strong><br>
+                    <small>Criado em: ${dateStr} | Tamanho: ${Math.round(backup.dataSize / 1024)} KB</small>
+                </li>
+            `;
+        });
+        html += '</ul>';
+        
+        listaEl.innerHTML = html;
+    } catch (error) {
+        console.error('Erro ao carregar lista de backups:', error);
+    }
+}
+
+function configurarAutoBackup() {
+    const tempoMs = parseInt(document.getElementById('tempoBackup').value);
+    
+    if (autoBackupInterval) {
+        clearInterval(autoBackupInterval);
+        autoBackupInterval = null;
+    }
+    
+    if (tempoMs > 0) {
+        autoBackupInterval = setInterval(async () => {
+            try {
+                await fazerBackupSilencioso();
+                console.log('Backup automático executado:', new Date().toLocaleTimeString());
+            } catch (error) {
+                console.error('Erro no backup automático:', error);
+            }
+        }, tempoMs);
+    }
+}
+
+async function fazerBackupSilencioso() {
+    try {
+        const dados = {
+            exames: await listarDoBanco('exames'),
+            corridas: await listarDoBanco('corridas'),
+            configuracoes: await listarDoBanco('configuracoes'),
+            backupDate: new Date().toISOString(),
+            tipo: 'auto'
+        };
+        
+        const backupRecord = {
+            timestamp: new Date().toISOString(),
+            filename: `backup_auto_${new Date().toLocaleDateString('pt-BR').replace(/\//g, '-')}.json`,
+            dataSize: JSON.stringify(dados).length,
+            tipo: 'auto'
+        };
+        
+        await salvarNoBanco('backups', backupRecord);
+    } catch (error) {
+        console.error('Erro no backup automático:', error);
+    }
+}
+
+// ==================== CONFIGURAÇÕES ====================
+async function carregarConfiguracoes() {
+    try {
+        const configs = await listarDoBanco('configuracoes');
+        
+        const defaults = {
+            temaApp: temaAtual,
+            notificacoes: 'sim',
+            formatoData: 'dd/mm/yyyy',
+            tempoBackup: '0'
+        };
+        
+        configs.forEach(config => {
+            defaults[config.chave] = config.valor;
+        });
+        
+        document.getElementById('temaApp').value = defaults.temaApp;
+        document.getElementById('notificacoes').value = defaults.notificacoes;
+        document.getElementById('formatoData').value = defaults.formatoData;
+        document.getElementById('tempoBackup').value = defaults.tempoBackup;
+        
+        aplicarTema(defaults.temaApp);
+        configurarAutoBackup();
+        
+        for (const [chave, valor] of Object.entries(defaults)) {
+            const existe = configs.some(c => c.chave === chave);
+            if (!existe) {
+                await salvarNoBanco('configuracoes', { chave, valor });
+            }
+        }
+    } catch (error) {
+        console.error('Erro ao carregar configurações:', error);
+    }
+}
+
+async function salvarConfiguracoes() {
+    const configs = [
+        { chave: 'temaApp', valor: document.getElementById('temaApp').value },
+        { chave: 'notificacoes', valor: document.getElementById('notificacoes').value },
+        { chave: 'formatoData', valor: document.getElementById('formatoData').value },
+        { chave: 'tempoBackup', valor: document.getElementById('tempoBackup').value }
+    ];
+    
+    try {
+        for (const config of configs) {
+            await salvarNoBanco('configuracoes', config);
+        }
+        
+        aplicarTema(document.getElementById('temaApp').value);
+        salvarTema(document.getElementById('temaApp').value);
+        configurarAutoBackup();
+        
+        alert('Configurações salvas com sucesso!');
+        fecharModal('configModal');
+    } catch (error) {
+        console.error('Erro ao salvar configurações:', error);
+        alert('Erro ao salvar configurações.');
+    }
+}
+
+async function limparTudo() {
+    if (!confirm('ATENÇÃO CRÍTICA!\n\nIsso irá apagar TODOS os dados do aplicativo:\n- Todos os exames\n- Todas as corridas\n- Todas as configurações\n\nEsta ação NÃO pode ser desfeita!\n\nTem certeza absoluta?')) {
+        return;
+    }
+    
+    try {
+        const stores = ['exames', 'corridas', 'configuracoes', 'backups'];
+        for (const store of stores) {
+            await limparStore(store);
+        }
+        
+        carregarExames();
+        carregarCorridas();
+        carregarConfiguracoes();
+        carregarListaBackups();
+        atualizarDashboard();
+        
+        alert('Todos os dados foram apagados com sucesso!');
+        fecharModal('configModal');
+    } catch (error) {
+        console.error('Erro ao limpar dados:', error);
+        alert('Erro ao limpar dados.');
+    }
+}
+
+// ==================== FUNÇÕES UTILITÁRIAS ====================
+function abrirAba(tabName) {
+    document.querySelectorAll('.menu-btn').forEach(btn => btn.classList.remove('active'));
+    event.currentTarget.classList.add('active');
+    
+    document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+    document.getElementById(tabName).classList.add('active');
+    
+    if (tabName === 'dashboard') {
+        atualizarDashboard();
+    }
+}
+
+function abrirModal(modalId) {
+    document.getElementById(modalId).style.display = 'block';
+    document.body.style.overflow = 'hidden';
+}
+
+function fecharModal(modalId) {
+    document.getElementById(modalId).style.display = 'none';
+    document.body.style.overflow = 'auto';
+}
+
+window.onclick = function(event) {
+    const modals = document.getElementsByClassName('modal');
+    for (const modal of modals) {
+        if (event.target === modal) {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+    }
+}
+
+function calcularDiferencaHoras(inicio, fim) {
+    if(!inicio || !fim) return "";
+    
+    const [h1, m1] = inicio.split(':').map(Number);
+    const [h2, m2] = fim.split(':').map(Number);
+    
+    let min1 = h1 * 60 + m1;
+    let min2 = h2 * 60 + m2;
+    
+    if (min2 < min1) {
+        min2 += 24 * 60;
+    }
+    
+    const diff = min2 - min1;
+    const h = Math.floor(diff / 60);
+    const m = diff % 60;
+    
+    return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
+}
+
+function fmtData(dataISO) {
+    if(!dataISO) return "";
+    
+    try {
+        const [ano, mes, dia] = dataISO.split('-');
+        return `${dia}/${mes}/${ano}`;
+    } catch (error) {
+        return dataISO;
+    }
+}
+
+// Funções auxiliares
+function obterDoBanco(storeName, id) {
+    return new Promise((resolve, reject) => {
+        if (!db) {
+            reject(new Error('Banco de dados não inicializado'));
+            return;
+        }
+        
+        const transaction = db.transaction([storeName], 'readonly');
+        const store = transaction.objectStore(storeName);
+        const request = store.get(id);
+        
+        request.onsuccess = () => resolve(request.result);
+        request.onerror = (e) => reject(e.target.error);
+    });
+}
+
+function carregarUsuarioAtual() {
+    currentUser = {
+        id: 1,
+        nome: 'Willyam Krasinsky',
+        email: 'willyam@exemplo.com',
+        funcao: 'administrador'
+    };
+    
+    document.getElementById('userName').textContent = currentUser.nome;
+    document.getElementById('userAvatar').textContent = currentUser.nome.substring(0, 2).toUpperCase();
+    document.getElementById('print-usuario').textContent = currentUser.nome;
+}
+
+// ==================== DASHBOARD ====================
+async function atualizarDashboard() {
+    try {
+        const exames = await listarDoBanco('exames');
+        const corridas = await listarDoBanco('corridas');
+        
+        let totalHoras = 0;
+        exames.forEach(e => {
+            if (e.tempo) {
+                const [h, m] = e.tempo.split(':').map(Number);
+                totalHoras += h + (m / 60);
+            }
+        });
+        
+        const totalKm = corridas.reduce((acc, c) => acc + (c.km || 0), 0);
+        
+        const statsHTML = `
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                <div style="background: var(--surface); padding: 15px; border-radius: 8px; box-shadow: 0 2px 5px var(--shadow); border: 1px solid var(--border);">
+                    <h4 style="color: var(--primary); margin-bottom: 10px;">📋 Exames</h4>
+                    <p style="font-size: 32px; font-weight: bold; text-align: center;">${exames.length}</p>
+                    <p style="text-align: center; font-size: 12px; color: var(--text-secondary);">registros</p>
+                </div>
+                
+                <div style="background: var(--surface); padding: 15px; border-radius: 8px; box-shadow: 0 2px 5px var(--shadow); border: 1px solid var(--border);">
+                    <h4 style="color: var(--success); margin-bottom: 10px;">🚗 Corridas</h4>
+                    <p style="font-size: 32px; font-weight: bold; text-align: center;">${corridas.length}</p>
+                    <p style="text-align: center; font-size: 12px; color: var(--text-secondary);">registros</p>
+                </div>
+                
+                <div style="background: var(--surface); padding: 15px; border-radius: 8px; box-shadow: 0 2px 5px var(--shadow); border: 1px solid var(--border);">
+                    <h4 style="color: var(--warning); margin-bottom: 10px;">⏱️ Total Horas</h4>
+                    <p style="font-size: 32px; font-weight: bold; text-align: center;">${totalHoras.toFixed(2)}</p>
+                    <p style="text-align: center; font-size: 12px; color: var(--text-secondary);">horas trabalhadas</p>
+                </div>
+                
+                <div style="background: var(--surface); padding: 15px; border-radius: 8px; box-shadow: 0 2px 5px var(--shadow); border: 1px solid var(--border);">
+                    <h4 style="color: var(--info); margin-bottom: 10px;">📏 Total KM</h4>
+                    <p style="font-size: 32px; font-weight: bold; text-align: center;">${totalKm.toFixed(1)}</p>
+                    <p style="text-align: center; font-size: 12px; color: var(--text-secondary);">quilômetros rodados</p>
+                </div>
+            </div>
+            
+            <div style="margin-top: 20px; padding: 15px; background: var(--surface); border-radius: 8px; box-shadow: 0 2px 5px var(--shadow); border: 1px solid var(--border);">
+                <h4 style="color: var(--text); margin-bottom: 10px;">📊 Estatísticas</h4>
+                <p style="font-size: 14px;">Tema atual: <strong>${temaAtual === 'escuro' ? 'Escuro 🌙' : 'Claro ☀️'}</strong></p>
+                <p style="font-size: 14px;">Último backup: ${await getUltimoBackup()}</p>
+            </div>
+        `;
+        
+        document.getElementById('dashboardStats').innerHTML = statsHTML;
+    } catch (error) {
+        console.error('Erro ao atualizar dashboard:', error);
+    }
+}
+
+async function getUltimoBackup() {
+    try {
+        const backups = await listarDoBanco('backups');
+        if (backups.length === 0) return 'Nenhum backup criado';
+        
+        backups.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+        const ultimo = backups[0];
+        const date = new Date(ultimo.timestamp);
+        return date.toLocaleDateString('pt-BR') + ' ' + date.toLocaleTimeString('pt-BR').slice(0, 5);
+    } catch (error) {
+        return 'Erro ao carregar';
+    }
+}
+
+// ==================== RELATÓRIOS ====================
+async function gerarRelatorioPeriodo() {
+    const dataInicio = document.getElementById('dataInicio').value;
+    const dataFim = document.getElementById('dataFim').value;
+    
+    if (!dataInicio || !dataFim) {
+        alert('Selecione datas de início e fim!');
+        return;
+    }
+    
+    if (new Date(dataInicio) > new Date(dataFim)) {
+        alert('Data inicial não pode ser maior que data final!');
+        return;
+    }
+    
+    try {
+        const exames = await listarDoBanco('exames');
+        const corridas = await listarDoBanco('corridas');
+        
+        const examesFiltrados = exames.filter(e => {
+            const dataExame = new Date(e.data);
+            return dataExame >= new Date(dataInicio) && dataExame <= new Date(dataFim);
+        });
+        
+        const corridasFiltradas = corridas.filter(c => {
+            const dataCorrida = new Date(c.data);
+            return dataCorrida >= new Date(dataInicio) && dataCorrida <= new Date(dataFim);
+        });
+        
+        let totalHoras = 0;
+        examesFiltrados.forEach(e => {
+            if (e.tempo) {
+                const [h, m] = e.tempo.split(':').map(Number);
+                totalHoras += h + (m / 60);
+            }
+        });
+        
+        const totalKm = corridasFiltradas.reduce((acc, c) => acc + (c.km || 0), 0);
+        
+        let relatorioHTML = `
+            <div style="background: var(--light); padding: 20px; border-radius: 8px; margin-top: 20px; border: 1px solid var(--border);">
+                <h4 style="color: var(--text);">📊 Relatório: ${fmtData(dataInicio)} a ${fmtData(dataFim)}</h4>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 15px;">
+                    <div style="background: var(--surface); padding: 15px; border-radius: 5px; text-align: center; border: 1px solid var(--border);">
+                        <h5>📋 Exames</h5>
+                        <p style="font-size: 24px; font-weight: bold; color: var(--primary);">${examesFiltrados.length}</p>
+                    </div>
+                    <div style="background: var(--surface); padding: 15px; border-radius: 5px; text-align: center; border: 1px solid var(--border);">
+                        <h5>🚗 Corridas</h5>
+                        <p style="font-size: 24px; font-weight: bold; color: var(--success);">${corridasFiltradas.length}</p>
+                    </div>
+                    <div style="background: var(--surface); padding: 15px; border-radius: 5px; text-align: center; border: 1px solid var(--border);">
+                        <h5>⏱️ Total Horas</h5>
+                        <p style="font-size: 24px; font-weight: bold; color: var(--warning);">${totalHoras.toFixed(2)}h</p>
+                    </div>
+                    <div style="background: var(--surface); padding: 15px; border-radius: 5px; text-align: center; border: 1px solid var(--border);">
+                        <h5>📏 Total KM</h5>
+                        <p style="font-size: 24px; font-weight: bold; color: var(--info);">${totalKm.toFixed(1)}km</p>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        document.getElementById('relatorioResultado').innerHTML = relatorioHTML;
+    } catch (error) {
+        console.error('Erro ao gerar relatório:', error);
+        alert('Erro ao gerar relatório.');
+    }
+}
+
+async function gerarRelatorioPDF() {
+    try {
+        const exames = await listarDoBanco('exames');
+        const corridas = await listarDoBanco('corridas');
+        
+        exames.sort((a, b) => new Date(a.data) - new Date(b.data));
+        
+        const periodo = document.getElementById('periodoInput').value;
+        document.getElementById('print-datas').textContent = 
+            "DATAS: " + (periodo || "Período não definido");
+        document.getElementById('print-gerado-em').textContent = 
+            "Gerado em: " + new Date().toLocaleString('pt-BR');
+        
+        const tbody = document.getElementById('tbody-print');
+        tbody.innerHTML = '';
+        
+        let totalMinutosHoras = 0;
+        
+        exames.forEach(reg => {
+            if(reg.tempo) {
+                let [h, m] = reg.tempo.split(':').map(Number);
+                totalMinutosHoras += (h * 60) + m;
+            }
+            
+            let row = `
+                <tr>
+                    <td>${fmtData(reg.data)}</td>
+                    <td>${reg.hrEntrada || ''}</td>
+                    <td>${reg.hrSaida || ''}</td>
+                    <td>${reg.tempo || ''}</td>
+                    <td class="col-left">${reg.setor}</td>
+                    <td class="col-left">${reg.exame}</td>
+                    <td class="col-left">${reg.paciente}</td>
+                </tr>
+            `;
+            tbody.innerHTML += row;
+        });
+        
+        const hTotal = Math.floor(totalMinutosHoras / 60);
+        const mTotal = totalMinutosHoras % 60;
+        const stringTotalHoras = `${hTotal}:${String(mTotal).padStart(2, '0')}`;
+        const totalKm = corridas.reduce((acc, curr) => acc + (parseFloat(curr.km) || 0), 0);
+        
+        document.getElementById('print-qtd-corridas').textContent = corridas.length;
+        document.getElementById('print-total-km').textContent = totalKm.toFixed(1).replace('.', ',');
+        document.getElementById('print-total-horas').textContent = stringTotalHoras;
+        
+        window.print();
+    } catch (error) {
+        console.error('Erro ao gerar PDF:', error);
+        alert('Erro ao gerar relatório PDF.');
+    }
+}
+
+function exportarExcel() {
+    alert('A exportação para Excel será implementada em breve!\nEnquanto isso, use a função de impressão (PDF).');
+}
+
+// Impedir que formulário seja enviado ao pressionar Enter
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Enter' && event.target.tagName !== 'TEXTAREA') {
+        event.preventDefault();
+    }
+});
+
+// Service Worker inline para garantir funcionamento
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function() {
+        const swCode = `
+            self.addEventListener('install', function(event) {
+                console.log('[Service Worker] Instalando...');
+                self.skipWaiting();
+            });
+
+            self.addEventListener('activate', function(event) {
+                console.log('[Service Worker] Ativo e pronto!');
+                event.waitUntil(clients.claim());
+            });
+
+            self.addEventListener('fetch', function(event) {
+                event.respondWith(fetch(event.request));
+            });
+        `;
+
+        const blob = new Blob([swCode], { type: 'application/javascript' });
+        const swURL = URL.createObjectURL(blob);
+        
+        navigator.serviceWorker.register(swURL, { scope: './' })
+            .then(function(registration) {
+                console.log('Service Worker registrado:', registration.scope);
+            })
+            .catch(function(error) {
+                console.log('Erro ao registrar Service Worker:', error);
+            });
+    });
+}
+</script>
+</body>
+</html>
